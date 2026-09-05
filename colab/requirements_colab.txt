@@ -1,0 +1,4 @@
+# Trimmed requirements for Google Colab.
+# Colab already ships: numpy, scipy, pandas, scikit-learn, matplotlib, tensorflow.
+# Only install what is missing or needs pinning.
+tensorflow-model-optimization>=0.7
