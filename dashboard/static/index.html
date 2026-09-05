@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ActiveStep Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root { --bg: #111; --panel: #1e1e1e; --text: #eee; --accent: #4caf50; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; }
+    header { padding: 1rem 2rem; background: #000; border-bottom: 1px solid #333; }
+    h1 { margin: 0; font-size: 1.4rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; padding: 1.5rem; }
+    .card { background: var(--panel); border-radius: 10px; padding: 1rem; }
+    .big { font-size: 2.2rem; font-weight: bold; color: var(--accent); }
+    .label { color: #888; font-size: 0.85rem; text-transform: uppercase; }
+    .status { padding: 0.4rem 0.8rem; border-radius: 6px; display: inline-block; background: #333; }
+    .status.cueing { background: #d32f2f; color: #fff; }
+    #log { max-height: 220px; overflow-y: auto; font-family: monospace; font-size: 0.8rem; }
+    .row { padding: 0.3rem 0; border-bottom: 1px solid #333; }
+  </style>
+</head>
+<body>
+  <header><h1>ActiveStep Dashboard</h1></header>
+  <div class="grid">
+    <div class="card">
+      <div class="label">pFOG</div>
+      <div class="big" id="pfog">--</div>
+    </div>
+    <div class="card">
+      <div class="label">Cadence (steps/min)</div>
+      <div class="big" id="cadence">--</div>
+    </div>
+    <div class="card">
+      <div class="label">Status</div>
+      <div class="status" id="status">standby</div>
+    </div>
+    <div class="card">
+      <div class="label">Last Cue / Modality</div>
+      <div class="big" id="cue" style="font-size:1.2rem; min-height:2.4rem;">--</div>
+    </div>
+    <div class="card" style="grid-column: 1 / -1;">
+      <canvas id="pfogChart" height="80"></canvas>
+    </div>
+    <div class="card">
+      <div class="label">Event log</div>
+      <div id="log"></div>
+    </div>
+    <div class="card">
+      <div class="label">Tier-2 context</div>
+      <pre id="tier2">waiting for data...</pre>
+    </div>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('pfogChart').getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'pFOG',
+          data: [],
+          borderColor: '#4caf50',
+          borderWidth: 1.5,
+          pointRadius: 0,
+          fill: false,
+          tension: 0.3
+        }]
+      },
+      options: {
+        animation: false,
+        scales: {
+          y: { min: 0, max: 1.0 },
+          x: { display: false }
+        },
+        plugins: { legend: { display: false } }
+      }
+    });
+
+    const ws = new WebSocket(`ws://${window.location.host}/ws/live`);
+    const maxPoints = 200;
+    const log = document.getElementById('log');
+
+    function addLog(msg) {
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.textContent = `${new Date().toLocaleTimeString()}  ${msg}`;
+      log.prepend(row);
+      if (log.children.length > 50) log.lastChild.remove();
+    }
+
+    ws.onmessage = (ev) => {
+      const m = JSON.parse(ev.data);
+      if (m.pfog !== undefined) {
+        document.getElementById('pfog').textContent = m.pfog.toFixed(3);
+        chart.data.labels.push('');
+        chart.data.datasets[0].data.push(m.pfog);
+        if (chart.data.datasets[0].data.length > maxPoints) {
+          chart.data.labels.shift();
+          chart.data.datasets[0].data.shift();
+        }
+        chart.update();
+      }
+      if (m.cadence !== undefined) document.getElementById('cadence').textContent = m.cadence.toFixed(1);
+      if (m.status) {
+        const el = document.getElementById('status');
+        el.textContent = m.status;
+        el.className = 'status ' + (m.status === 'cueing' ? 'cueing' : '');
+      }
+      if (m.event) {
+        document.getElementById('cue').textContent = `${m.event.type} (${m.event.modality || 0})`;
+        addLog(`${m.event.type}  modality=${m.event.modality}  pFOG=${m.pfog?.toFixed(3)}`);
+      }
+      if (m.tier2) {
+        document.getElementById('tier2').textContent = JSON.stringify(m.tier2, null, 2);
+      }
+    };
+
+    ws.onclose = () => addLog('WebSocket closed');
+  </script>
+</body>
+</html>

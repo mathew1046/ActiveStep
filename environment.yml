@@ -1,0 +1,23 @@
+name: activestep
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - numpy
+  - scipy
+  - pandas
+  - scikit-learn
+  - matplotlib
+  - fastapi
+  - uvicorn
+  - websockets
+  - python-multipart
+  - jinja2
+  - sqlite
+  - pytest
+  - pip:
+    - "tensorflow-cpu>=2.17,<2.19"
+    - tensorflow-model-optimization
+    - sounddevice

@@ -1,0 +1,21 @@
+{
+  "input_scale": 1.0,
+  "input_zero_point": 0,
+  "output_scale": 1.0,
+  "output_zero_point": 0,
+  "io_dtype": "<class 'numpy.float32'>",
+  "window_samples": 200,
+  "n_axes": 3,
+  "scaler": {
+    "mean": [
+      -97.46124267578125,
+      1009.7049560546875,
+      242.57411193847656
+    ],
+    "std": [
+      568.8807373046875,
+      360.1184387207031,
+      318.50634765625
+    ]
+  }
+}

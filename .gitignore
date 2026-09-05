@@ -1,1 +1,23 @@
-*.md
+# Bytecode / caches
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Conda / Python environments
+.env
+.venv
+
+# Model artifacts
+models/*.tflite
+models/*.h5
+models/*.h
+models/*.json
+*.log
+
+# Data outputs
+data/
+checkpoints/
+activestep.db
+
+# OS
+.DS_Store

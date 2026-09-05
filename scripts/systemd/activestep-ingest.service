@@ -1,0 +1,13 @@
+[Unit]
+Description=ActiveStep UDP ingest
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/mathew/Arrakis/ActiveStep
+ExecStart=/opt/activestep/bin/python -m unoq.ingest
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

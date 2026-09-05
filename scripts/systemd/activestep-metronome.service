@@ -1,0 +1,13 @@
+[Unit]
+Description=ActiveStep adaptive metronome
+After=sound.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/mathew/Arrakis/ActiveStep
+ExecStart=/opt/activestep/bin/python -m unoq.metronome
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

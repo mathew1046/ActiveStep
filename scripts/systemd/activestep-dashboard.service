@@ -1,0 +1,13 @@
+[Unit]
+Description=ActiveStep dashboard
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/mathew/Arrakis/ActiveStep
+ExecStart=/opt/activestep/bin/python -m dashboard.main
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

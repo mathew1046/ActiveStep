@@ -1,0 +1,5 @@
+# Arduino App Lab manifest for ActiveStep UNO Q side
+name: ActiveStep
+version: 0.1.0
+sketch: sketch/sketch.ino
+python: app.py
