@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 
 from src.detector import CueFSM, DetectorConfig, StreamDetector, combine_scores
-from src.features import p_fog_combined
+from src.features import freeze_index_components, p_fog_combined
 
 
 def test_combine_scores_matches_features_impl():
@@ -89,3 +89,39 @@ def test_stream_detector_threshold_offset():
     det.set_threshold_offset(-0.35)
     assert det.effective_threshold == pytest.approx(0.55)
     assert det._fsm.threshold == pytest.approx(0.55)
+
+
+def test_fsm_causal_confirmation_minimum_duration_and_refractory():
+    fsm = CueFSM(
+        threshold=0.7, hysteresis=0.1, on_consecutive=2, off_consecutive=2,
+        min_cue_ms=500, refractory_ms=500,
+    )
+    assert not fsm.push(0, 0.8)
+    assert fsm.push(250, 0.8)[0].type == "cue_start"
+    assert not fsm.push(500, 0.1)
+    assert not fsm.push(750, 0.1)
+    assert fsm.push(1000, 0.1)[0].type == "cue_stop"
+    assert not fsm.push(1250, 0.9)
+    assert not fsm.push(1500, 0.9)
+    assert fsm.push(1750, 0.9)[0].type == "cue_start"
+
+
+def test_power_gate_suppresses_low_energy_freeze_ratio():
+    t = np.arange(200) / 100.0
+    weak = np.stack([np.sin(2 * np.pi * 5.0 * t)] * 3, axis=1).astype(np.float32)
+    strong = weak * 300.0
+    _, weak_power = freeze_index_components(weak[None], aggregate_axes=True)
+    _, strong_power = freeze_index_components(strong[None], aggregate_axes=True)
+    gate = float(np.sqrt(weak_power[0] * strong_power[0]))
+    cfg = DetectorConfig(
+        window_samples=200, hop_samples=25, w_cnn=0.0, w_fi=1.0,
+        threshold=0.6, fi_power_threshold=gate,
+    )
+    weak_detector = StreamDetector(cfg)
+    strong_detector = StreamDetector(cfg)
+    weak_decision = strong_decision = None
+    for i in range(200):
+        weak_decision = weak_detector.push(i * 10, weak[i]) or weak_decision
+        strong_decision = strong_detector.push(i * 10, strong[i]) or strong_decision
+    assert weak_decision.fi == 0.0 and not weak_decision.cueing
+    assert strong_decision.fi > 0.0 and strong_decision.cueing

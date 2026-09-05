@@ -15,7 +15,7 @@ source /opt/anaconda/etc/profile.d/conda.sh
 conda activate activestep
 
 STAGE="${1:-all}"
-TAG="${2:-baseline_v1}"
+TAG="${2:-improved_v2}"
 CACHE_DIR=".cache/windows"
 
 case "$STAGE" in

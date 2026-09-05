@@ -52,33 +52,43 @@ def build_fog_cnn(
 
 
 class StandardScaler:
-    """Per-axis mean/std scaler, stored as JSON for the ESP32/UNO Q."""
+    """Per-axis scaler with optional trailing-window mean removal."""
 
-    def __init__(self):
+    def __init__(self, demean_window: bool = False):
         self.mean: np.ndarray = None
         self.std: np.ndarray = None
+        self.demean_window = bool(demean_window)
+
+    def _prepare(self, X: np.ndarray) -> np.ndarray:
+        X = np.asarray(X, dtype=np.float32)
+        return X - X.mean(axis=-2, keepdims=True) if self.demean_window else X
 
     def fit(self, X: np.ndarray):
-        self.mean = X.reshape(-1, X.shape[-1]).mean(axis=0).astype(np.float32)
-        self.std = X.reshape(-1, X.shape[-1]).std(axis=0).astype(np.float32)
+        prepared = self._prepare(X)
+        self.mean = prepared.reshape(-1, prepared.shape[-1]).mean(axis=0).astype(np.float32)
+        self.std = prepared.reshape(-1, prepared.shape[-1]).std(axis=0).astype(np.float32)
         return self
 
     def transform(self, X: np.ndarray) -> np.ndarray:
-        return (X - self.mean) / (self.std + 1e-8)
+        return (self._prepare(X) - self.mean) / (self.std + 1e-8)
 
     def inverse(self, X: np.ndarray) -> np.ndarray:
         return X * (self.std + 1e-8) + self.mean
 
     def save(self, path: str | Path):
-        data = {"mean": self.mean.tolist(), "std": self.std.tolist()}
+        data = {
+            "mean": self.mean.tolist(),
+            "std": self.std.tolist(),
+            "demean_window": self.demean_window,
+        }
         with open(path, "w") as f:
             json.dump(data, f, indent=2)
 
     @classmethod
     def load(cls, path: str | Path):
-        obj = cls()
         with open(path) as f:
             data = json.load(f)
+        obj = cls(demean_window=data.get("demean_window", False))
         obj.mean = np.array(data["mean"], dtype=np.float32)
         obj.std = np.array(data["std"], dtype=np.float32)
         return obj

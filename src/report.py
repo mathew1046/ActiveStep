@@ -56,14 +56,16 @@ def render(summary_path: Path, audit_path: Path | None = None, out_path: Path | 
         )
         lines.append(
             f"- Window {protocol.get('window_s')} s, training hop {protocol.get('train_hop_s')} s, "
-            f"evaluation (deployment) hop {protocol.get('eval_hop_s')} s, "
-            f"hysteresis {protocol.get('hysteresis')}."
+            f"evaluation (deployment) hop {protocol.get('eval_hop_s')} s; hysteresis grid "
+            f"{protocol.get('hysteresis_grid')}."
         )
         lines.append(
-            f"- Operating point: max pooled event sensitivity s.t. false-cue starts "
-            f"<= {protocol.get('fp_budget_per_hour')}/h (inner OOF); training label: "
-            f"{protocol.get('label')}."
+            f"- Operating point: max pooled event sensitivity with false-cue starts "
+            f"<= {protocol.get('fp_budget_per_hour')}/h and unnecessary cueing "
+            f"<= {protocol.get('max_unnecessary_cue_min_per_hour')} min/h (inner OOF); "
+            f"training label: {protocol.get('label')}."
         )
+        lines.append(f"- Latency timeline: {protocol.get('latency_timeline')}.")
         lines.append(f"- Threshold grid: {protocol.get('threshold_grid')}")
         lines.append(f"- Weight grid: {protocol.get('weight_grid')}")
         lines.append("")
@@ -127,12 +129,19 @@ def render(summary_path: Path, audit_path: Path | None = None, out_path: Path | 
             f"macro false cues/h: {_f(m.get('false_cue_starts_per_nonfog_hour'))}."
         )
         lines.append(
-            f"- Pooled window PR-AUC (endpoint label): {_f(s.get('pooled_window_pr_auc_endpoint'))}."
+            f"- Pooled window PR-AUC (endpoint label): {_f(s.get('pooled_window_pr_auc_endpoint'))}; "
+            f"mean onset-to-cue delay: {_f(s.get('pooled_mean_detection_delay_s'), 2)} s; "
+            f"unnecessary cueing: {_f(s.get('pooled_unnecessary_cue_min_per_nonfog_hour'), 2)} min/h."
+        )
+        acceptance = s.get("engineering_acceptance", {})
+        lines.append(
+            f"- Minimum viable engineering criteria: "
+            f"{'PASS' if acceptance.get('minimum_viable_pass') else 'FAIL'}."
         )
         if delays:
             lines.append(
-                f"- Mean onset-to-cue delay across folds: min {_f(min(delays), 2)} s, "
-                f"max {_f(max(delays), 2)} s (per-fold means)."
+                f"- Per-fold mean onset-to-cue delay range: {_f(min(delays), 2)}–"
+                f"{_f(max(delays), 2)} s."
             )
         lines.append("")
         fold_rows = [
@@ -169,7 +178,7 @@ def render(summary_path: Path, audit_path: Path | None = None, out_path: Path | 
 
 def main():
     parser = argparse.ArgumentParser(description="Render assessment report")
-    parser.add_argument("--summary", default="models/nested/baseline_v1/summary.json", type=Path)
+    parser.add_argument("--summary", default="models/nested/improved_v2/summary.json", type=Path)
     parser.add_argument("--audit", default="models/dataset_audit.json", type=Path)
     parser.add_argument("--out", default=None, type=Path)
     args = parser.parse_args()

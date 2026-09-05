@@ -1,0 +1,517 @@
+{
+  "n_runs": 2,
+  "n_events": 24,
+  "n_detected": 5,
+  "event_sensitivity": 0.20833333333333334,
+  "detected_within": {
+    "0.5s": 0,
+    "1.0s": 2,
+    "2.0s": 5
+  },
+  "detection_delay": {
+    "n": 5,
+    "mean_s": 1.165,
+    "median_s": 1.131,
+    "p90_s": 1.5492,
+    "max_s": 1.568
+  },
+  "n_false_cue_starts": 1,
+  "nonfog_hours": 0.424603888888889,
+  "false_cue_starts_per_nonfog_hour": 2.3551362250044807,
+  "unnecessary_cue_min_per_nonfog_hour": 0.4187039685353799,
+  "n_cue_starts": 6,
+  "repeated_cue_onsets": 0,
+  "n_cued_during_event": 5,
+  "cue_stop_delay": {
+    "n": 2,
+    "mean_s": 4.7085,
+    "median_s": 4.7085,
+    "p90_s": 6.2713,
+    "max_s": 6.662
+  },
+  "n_cue_stops_censored": 0,
+  "n_cues_ended_before_event_end": 3,
+  "exposure": {
+    "total_s": 2654.0320000000006,
+    "valid_s": 1610.0300000000007,
+    "fog_s": 81.45600000000003,
+    "nonfog_s": 1528.5740000000005,
+    "n_windows": 6426.0,
+    "n_windows_excluded_invalid": 4175.0
+  },
+  "window_endpoint": {
+    "n": 6426,
+    "n_pos": 321,
+    "precision": 0.8636363636363636,
+    "recall": 0.059190031152647975,
+    "f1": 0.11078717201166181,
+    "tp": 19,
+    "fp": 3,
+    "fn": 302,
+    "pr_auc": null
+  },
+  "window_any": {
+    "n": 6426,
+    "n_pos": 512,
+    "precision": 0.8636363636363636,
+    "recall": 0.037109375,
+    "f1": 0.07116104868913858,
+    "tp": 19,
+    "fp": 3,
+    "fn": 493,
+    "pr_auc": null
+  },
+  "per_run": [
+    {
+      "n_events": 16,
+      "n_detected": 4,
+      "n_cued_during_event": 4,
+      "detected_within": {
+        "0.5s": 0,
+        "1.0s": 1,
+        "2.0s": 4
+      },
+      "detection_delay": {
+        "n": 4,
+        "mean_s": 1.24,
+        "median_s": 1.326,
+        "p90_s": 1.5539,
+        "max_s": 1.568
+      },
+      "detection_delay_raw_s": [
+        1.131,
+        0.74,
+        1.521,
+        1.568
+      ],
+      "n_cue_starts": 4,
+      "n_false_cue_starts": 0,
+      "repeated_cue_onsets": 0,
+      "cue_stop_delay": {
+        "n": 2,
+        "mean_s": 4.7085,
+        "median_s": 4.7085,
+        "p90_s": 6.2713,
+        "max_s": 6.662
+      },
+      "cue_stop_delay_raw_s": [
+        2.755,
+        6.662
+      ],
+      "n_cue_stops_censored": 0,
+      "n_cues_ended_before_event_end": 2,
+      "unnecessary_cue_ms": 9417.0,
+      "nonfog_hours": 0.30540305555555564,
+      "window_endpoint": {
+        "n": 4633,
+        "n_pos": 238,
+        "precision": 1.0,
+        "recall": 0.0546218487394958,
+        "f1": 0.10358565737051792,
+        "tp": 13,
+        "fp": 0,
+        "fn": 225,
+        "pr_auc": 0.5243542717357358
+      },
+      "window_any": {
+        "n": 4633,
+        "n_pos": 365,
+        "precision": 1.0,
+        "recall": 0.03561643835616438,
+        "f1": 0.06878306878306878,
+        "tp": 13,
+        "fp": 0,
+        "fn": 352,
+        "pr_auc": 0.5286222506255855
+      },
+      "exposure": {
+        "total_s": 1867.5630000000003,
+        "valid_s": 1160.0150000000003,
+        "fog_s": 60.56400000000002,
+        "nonfog_s": 1099.4510000000002,
+        "n_windows": 4633,
+        "n_windows_excluded_invalid": 2830
+      },
+      "cues": [
+        {
+          "start_ms": 1527771,
+          "stop_ms": 1528771,
+          "censored": false
+        },
+        {
+          "start_ms": 1563521,
+          "stop_ms": 1567271,
+          "censored": false
+        },
+        {
+          "start_ms": 1584771,
+          "stop_ms": 1590021,
+          "censored": false
+        },
+        {
+          "start_ms": 1610521,
+          "stop_ms": 1621021,
+          "censored": false
+        }
+      ],
+      "subject": 7,
+      "run": 1,
+      "events": [
+        {
+          "onset_ms": 635500,
+          "end_ms": 639719,
+          "duration_s": 4.219,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 682796,
+          "end_ms": 685750,
+          "duration_s": 2.954,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 723609,
+          "end_ms": 726203,
+          "duration_s": 2.594,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 839093,
+          "end_ms": 848703,
+          "duration_s": 9.61,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 881140,
+          "end_ms": 881984,
+          "duration_s": 0.844,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 910890,
+          "end_ms": 915187,
+          "duration_s": 4.297,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 922812,
+          "end_ms": 926203,
+          "duration_s": 3.391,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 958734,
+          "end_ms": 960000,
+          "duration_s": 1.266,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1451328,
+          "end_ms": 1452703,
+          "duration_s": 1.375,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1526640,
+          "end_ms": 1529719,
+          "duration_s": 3.079,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1550609,
+          "end_ms": 1553641,
+          "duration_s": 3.032,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1562781,
+          "end_ms": 1564516,
+          "duration_s": 1.735,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1570578,
+          "end_ms": 1572703,
+          "duration_s": 2.125,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1583250,
+          "end_ms": 1594750,
+          "duration_s": 11.5,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1608953,
+          "end_ms": 1614359,
+          "duration_s": 5.406,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1634812,
+          "end_ms": 1637953,
+          "duration_s": 3.141,
+          "start_censored": false,
+          "end_censored": false
+        }
+      ]
+    },
+    {
+      "n_events": 8,
+      "n_detected": 1,
+      "n_cued_during_event": 1,
+      "detected_within": {
+        "0.5s": 0,
+        "1.0s": 1,
+        "2.0s": 1
+      },
+      "detection_delay": {
+        "n": 1,
+        "mean_s": 0.865,
+        "median_s": 0.865,
+        "p90_s": 0.865,
+        "max_s": 0.865
+      },
+      "detection_delay_raw_s": [
+        0.865
+      ],
+      "n_cue_starts": 2,
+      "n_false_cue_starts": 1,
+      "repeated_cue_onsets": 0,
+      "cue_stop_delay": {
+        "n": 0,
+        "mean_s": null,
+        "median_s": null,
+        "p90_s": null,
+        "max_s": null
+      },
+      "cue_stop_delay_raw_s": [],
+      "n_cue_stops_censored": 0,
+      "n_cues_ended_before_event_end": 1,
+      "unnecessary_cue_ms": 1250.0,
+      "nonfog_hours": 0.1192008333333334,
+      "window_endpoint": {
+        "n": 1793,
+        "n_pos": 83,
+        "precision": 0.6666666666666666,
+        "recall": 0.07228915662650602,
+        "f1": 0.13043478260869565,
+        "tp": 6,
+        "fp": 3,
+        "fn": 77,
+        "pr_auc": 0.6527824784663363
+      },
+      "window_any": {
+        "n": 1793,
+        "n_pos": 147,
+        "precision": 0.6666666666666666,
+        "recall": 0.04081632653061224,
+        "f1": 0.07692307692307691,
+        "tp": 6,
+        "fp": 3,
+        "fn": 141,
+        "pr_auc": 0.677959646524124
+      },
+      "exposure": {
+        "total_s": 786.4690000000003,
+        "valid_s": 450.0150000000002,
+        "fog_s": 20.892000000000007,
+        "nonfog_s": 429.1230000000002,
+        "n_windows": 1793,
+        "n_windows_excluded_invalid": 1345
+      },
+      "cues": [
+        {
+          "start_ms": 536271,
+          "stop_ms": 541771,
+          "censored": false
+        },
+        {
+          "start_ms": 653271,
+          "stop_ms": 654521,
+          "censored": false
+        }
+      ],
+      "subject": 7,
+      "run": 2,
+      "events": [
+        {
+          "onset_ms": 456718,
+          "end_ms": 458281,
+          "duration_s": 1.563,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 462406,
+          "end_ms": 463250,
+          "duration_s": 0.844,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 487468,
+          "end_ms": 489984,
+          "duration_s": 2.516,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 492828,
+          "end_ms": 498094,
+          "duration_s": 5.266,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 515796,
+          "end_ms": 517031,
+          "duration_s": 1.235,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 525265,
+          "end_ms": 526406,
+          "duration_s": 1.141,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 535406,
+          "end_ms": 542391,
+          "duration_s": 6.985,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 545296,
+          "end_ms": 546641,
+          "duration_s": 1.345,
+          "start_censored": false,
+          "end_censored": false
+        }
+      ]
+    }
+  ],
+  "subject": 7,
+  "candidate": "cnn_endpoint",
+  "recipe": {
+    "w_cnn": 1.0,
+    "w_fi": 0.0,
+    "threshold": 0.975,
+    "hysteresis": 0.2,
+    "ema_alpha": 1.0,
+    "on_consecutive": 1,
+    "off_consecutive": 1,
+    "min_cue_ms": 0,
+    "refractory_ms": 0,
+    "fp_budget_per_hour": 5.0,
+    "max_unnecessary_cue_min_per_hour": 2.0,
+    "budget_met": true,
+    "selection_tier": "declared_budget",
+    "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+  },
+  "jitter_tol_0.3s": {
+    "event_sensitivity": 0.20833333333333334,
+    "n_detected": 5,
+    "n_events": 24,
+    "false_cue_starts_per_nonfog_hour": 2.3551362250044807,
+    "n_false_cue_starts": 1,
+    "detection_delay": {
+      "n": 5,
+      "mean_s": 1.165,
+      "median_s": 1.131,
+      "p90_s": 1.5492,
+      "max_s": 1.568
+    }
+  },
+  "protocol": {
+    "window_s": 2.0,
+    "train_hop_s": 0.5,
+    "eval_hop_s": 0.25,
+    "hysteresis_grid": [
+      0.1,
+      0.15,
+      0.2
+    ],
+    "threshold_grid": [
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      0.975,
+      0.99,
+      0.995
+    ],
+    "temporal_grid": [
+      {
+        "ema_alpha": 1.0,
+        "on_consecutive": 1,
+        "off_consecutive": 1,
+        "min_cue_ms": 0,
+        "refractory_ms": 0
+      },
+      {
+        "ema_alpha": 1.0,
+        "on_consecutive": 2,
+        "off_consecutive": 2,
+        "min_cue_ms": 1000,
+        "refractory_ms": 1000
+      },
+      {
+        "ema_alpha": 0.5,
+        "on_consecutive": 1,
+        "off_consecutive": 2,
+        "min_cue_ms": 1000,
+        "refractory_ms": 1000
+      },
+      {
+        "ema_alpha": 0.5,
+        "on_consecutive": 2,
+        "off_consecutive": 2,
+        "min_cue_ms": 1000,
+        "refractory_ms": 2000
+      }
+    ],
+    "weight_grid": [
+      [
+        1.0,
+        0.0
+      ]
+    ],
+    "fp_budget_per_hour": 5.0,
+    "max_unnecessary_cue_min_per_hour": 2.0,
+    "epochs": 15,
+    "batch": 64,
+    "seed": 42,
+    "label": "freeze-at-window-end",
+    "latency_timeline": "window availability time (includes resampling lookahead)"
+  },
+  "elapsed_s": 293.2
+}

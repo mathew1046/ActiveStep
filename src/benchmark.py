@@ -51,9 +51,17 @@ def run_cue_fsm(
     threshold: float,
     hysteresis: float,
     t_end_ms: int,
+    ema_alpha: float = 1.0,
+    on_consecutive: int = 1,
+    off_consecutive: int = 1,
+    min_cue_ms: int = 0,
+    refractory_ms: int = 0,
 ) -> list[Cue]:
-    """Run the shared hysteresis FSM over one recording's score stream."""
-    fsm = CueFSM(threshold, hysteresis)
+    """Run the shared causal cue FSM over one recording's score stream."""
+    fsm = CueFSM(
+        threshold, hysteresis, ema_alpha, on_consecutive, off_consecutive,
+        min_cue_ms, refractory_ms,
+    )
     cues: list[Cue] = []
     start: int | None = None
     for t, s in zip(decision_ms, scores):
@@ -197,11 +205,22 @@ def window_metrics(scores: np.ndarray, label: np.ndarray, threshold: float) -> d
     return out
 
 
-def evaluate_run(bundle: RunWindows, scores: np.ndarray, threshold: float, hysteresis: float, tol_s: float) -> dict:
+def evaluate_run(
+    bundle: RunWindows,
+    scores: np.ndarray,
+    threshold: float,
+    hysteresis: float,
+    tol_s: float,
+    temporal: dict | None = None,
+) -> dict:
     """Full evaluation of one recording's score stream against its ground truth."""
-    cues = run_cue_fsm(scores, bundle.decision_ms, threshold, hysteresis, bundle.t_end_ms)
+    timeline = bundle.avail_ms if len(bundle.avail_ms) else bundle.decision_ms
+    stream_end_ms = max(bundle.t_end_ms, int(timeline[-1]) if len(timeline) else bundle.t_end_ms)
+    cues = run_cue_fsm(
+        scores, timeline, threshold, hysteresis, stream_end_ms, **(temporal or {})
+    )
     nonfog_h = bundle.exposure.get("nonfog_s", 0.0) / 3600.0
-    m = match_run(bundle.events, cues, nonfog_h, tol_s, bundle.t_end_ms)
+    m = match_run(bundle.events, cues, nonfog_h, tol_s, stream_end_ms)
     m["window_endpoint"] = window_metrics(scores, bundle.label_endpoint, threshold)
     m["window_any"] = window_metrics(scores, bundle.label_any, threshold)
     m["exposure"] = {
@@ -233,9 +252,10 @@ def evaluate_participant(
     threshold: float,
     hysteresis: float,
     tol_s: float = DEFAULT_TOL_S,
+    temporal: dict | None = None,
 ) -> dict:
     """Aggregate run evaluations into one participant result (counts kept raw)."""
-    per_run = [evaluate_run(b, s, threshold, hysteresis, tol_s) for b, s in run_evals]
+    per_run = [evaluate_run(b, s, threshold, hysteresis, tol_s, temporal) for b, s in run_evals]
 
     n_events = sum(r["n_events"] for r in per_run)
     n_detected = sum(r["n_detected"] for r in per_run)

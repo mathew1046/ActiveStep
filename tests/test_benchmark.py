@@ -163,6 +163,16 @@ def test_evaluate_participant_pools_runs():
     assert res["exposure"]["nonfog_s"] == pytest.approx(3600)
 
 
+def test_evaluation_charges_decision_availability_delay():
+    bundle = _mw([1000], [_ev(1000, 2000)], nonfog_s=1800, t_end=2000,
+                 labels_ep=[True], labels_any=[True])
+    result = evaluate_participant(
+        [(bundle, np.array([0.9]))], threshold=0.7, hysteresis=0.15
+    )
+    assert result["n_detected"] == 1
+    assert result["detection_delay"]["mean_s"] == pytest.approx(0.016)
+
+
 def test_aggregate_pooled_macro_and_bootstrap():
     def part(det, ev, false, nonfog_h):
         return {

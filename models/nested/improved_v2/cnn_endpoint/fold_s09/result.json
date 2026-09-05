@@ -1,0 +1,428 @@
+{
+  "n_runs": 1,
+  "n_events": 27,
+  "n_detected": 0,
+  "event_sensitivity": 0.0,
+  "detected_within": {
+    "0.5s": 0,
+    "1.0s": 0,
+    "2.0s": 0
+  },
+  "detection_delay": {
+    "n": 0,
+    "mean_s": null,
+    "median_s": null,
+    "p90_s": null,
+    "max_s": null
+  },
+  "n_false_cue_starts": 0,
+  "nonfog_hours": 0.4083241666666667,
+  "false_cue_starts_per_nonfog_hour": 0.0,
+  "unnecessary_cue_min_per_nonfog_hour": 0.0,
+  "n_cue_starts": 0,
+  "repeated_cue_onsets": 0,
+  "n_cued_during_event": 0,
+  "cue_stop_delay": {
+    "n": 0,
+    "mean_s": null,
+    "median_s": null,
+    "p90_s": null,
+    "max_s": null
+  },
+  "n_cue_stops_censored": 0,
+  "n_cues_ended_before_event_end": 0,
+  "exposure": {
+    "total_s": 2692.3440000000005,
+    "valid_s": 1740.0750000000003,
+    "fog_s": 270.1080000000001,
+    "nonfog_s": 1469.967,
+    "n_windows": 6925.0,
+    "n_windows_excluded_invalid": 3837.0
+  },
+  "window_endpoint": {
+    "n": 6925,
+    "n_pos": 1082,
+    "precision": 1.0,
+    "recall": 0.010166358595194085,
+    "f1": 0.020128087831655993,
+    "tp": 11,
+    "fp": 0,
+    "fn": 1071,
+    "pr_auc": null
+  },
+  "window_any": {
+    "n": 6925,
+    "n_pos": 1296,
+    "precision": 1.0,
+    "recall": 0.008487654320987654,
+    "f1": 0.016832440703902062,
+    "tp": 11,
+    "fp": 0,
+    "fn": 1285,
+    "pr_auc": null
+  },
+  "per_run": [
+    {
+      "n_events": 27,
+      "n_detected": 0,
+      "n_cued_during_event": 0,
+      "detected_within": {
+        "0.5s": 0,
+        "1.0s": 0,
+        "2.0s": 0
+      },
+      "detection_delay": {
+        "n": 0,
+        "mean_s": null,
+        "median_s": null,
+        "p90_s": null,
+        "max_s": null
+      },
+      "detection_delay_raw_s": [],
+      "n_cue_starts": 0,
+      "n_false_cue_starts": 0,
+      "repeated_cue_onsets": 0,
+      "cue_stop_delay": {
+        "n": 0,
+        "mean_s": null,
+        "median_s": null,
+        "p90_s": null,
+        "max_s": null
+      },
+      "cue_stop_delay_raw_s": [],
+      "n_cue_stops_censored": 0,
+      "n_cues_ended_before_event_end": 0,
+      "unnecessary_cue_ms": 0.0,
+      "nonfog_hours": 0.4083241666666667,
+      "window_endpoint": {
+        "n": 6925,
+        "n_pos": 1082,
+        "precision": 1.0,
+        "recall": 0.010166358595194085,
+        "f1": 0.020128087831655993,
+        "tp": 11,
+        "fp": 0,
+        "fn": 1071,
+        "pr_auc": 0.7798223651283768
+      },
+      "window_any": {
+        "n": 6925,
+        "n_pos": 1296,
+        "precision": 1.0,
+        "recall": 0.008487654320987654,
+        "f1": 0.016832440703902062,
+        "tp": 11,
+        "fp": 0,
+        "fn": 1285,
+        "pr_auc": 0.7444203503194597
+      },
+      "exposure": {
+        "total_s": 2692.3440000000005,
+        "valid_s": 1740.0750000000003,
+        "fog_s": 270.1080000000001,
+        "nonfog_s": 1469.967,
+        "n_windows": 6925,
+        "n_windows_excluded_invalid": 3837
+      },
+      "cues": [],
+      "subject": 9,
+      "run": 1,
+      "events": [
+        {
+          "onset_ms": 457500,
+          "end_ms": 458469,
+          "duration_s": 0.969,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 509140,
+          "end_ms": 510891,
+          "duration_s": 1.751,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 524828,
+          "end_ms": 525516,
+          "duration_s": 0.688,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 543421,
+          "end_ms": 545062,
+          "duration_s": 1.641,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 601296,
+          "end_ms": 623641,
+          "duration_s": 22.345,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 633421,
+          "end_ms": 647281,
+          "duration_s": 13.86,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 661546,
+          "end_ms": 664422,
+          "duration_s": 2.876,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 669734,
+          "end_ms": 685250,
+          "duration_s": 15.516,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 697875,
+          "end_ms": 706453,
+          "duration_s": 8.578,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 717625,
+          "end_ms": 726594,
+          "duration_s": 8.969,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 822093,
+          "end_ms": 850375,
+          "duration_s": 28.282,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 875609,
+          "end_ms": 901203,
+          "duration_s": 25.594,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 920687,
+          "end_ms": 923578,
+          "duration_s": 2.891,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 944343,
+          "end_ms": 981375,
+          "duration_s": 37.032,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 991375,
+          "end_ms": 1011375,
+          "duration_s": 20.0,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1666750,
+          "end_ms": 1671453,
+          "duration_s": 4.703,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1765859,
+          "end_ms": 1767719,
+          "duration_s": 1.86,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1855125,
+          "end_ms": 1870141,
+          "duration_s": 15.016,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1884687,
+          "end_ms": 1886297,
+          "duration_s": 1.61,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1904156,
+          "end_ms": 1918812,
+          "duration_s": 14.656,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1930250,
+          "end_ms": 1938719,
+          "duration_s": 8.469,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1949281,
+          "end_ms": 1962156,
+          "duration_s": 12.875,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1976953,
+          "end_ms": 1979016,
+          "duration_s": 2.063,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1990000,
+          "end_ms": 1996906,
+          "duration_s": 6.906,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 2161328,
+          "end_ms": 2163656,
+          "duration_s": 2.328,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 2174000,
+          "end_ms": 2178453,
+          "duration_s": 4.453,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 2430640,
+          "end_ms": 2434828,
+          "duration_s": 4.188,
+          "start_censored": false,
+          "end_censored": false
+        }
+      ]
+    }
+  ],
+  "subject": 9,
+  "candidate": "cnn_endpoint",
+  "recipe": {
+    "w_cnn": 1.0,
+    "w_fi": 0.0,
+    "threshold": 0.95,
+    "hysteresis": 0.1,
+    "ema_alpha": 1.0,
+    "on_consecutive": 2,
+    "off_consecutive": 2,
+    "min_cue_ms": 1000,
+    "refractory_ms": 1000,
+    "fp_budget_per_hour": 5.0,
+    "max_unnecessary_cue_min_per_hour": 2.0,
+    "budget_met": true,
+    "selection_tier": "declared_budget",
+    "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+  },
+  "jitter_tol_0.3s": {
+    "event_sensitivity": 0.0,
+    "n_detected": 0,
+    "n_events": 27,
+    "false_cue_starts_per_nonfog_hour": 0.0,
+    "n_false_cue_starts": 0,
+    "detection_delay": {
+      "n": 0,
+      "mean_s": null,
+      "median_s": null,
+      "p90_s": null,
+      "max_s": null
+    }
+  },
+  "protocol": {
+    "window_s": 2.0,
+    "train_hop_s": 0.5,
+    "eval_hop_s": 0.25,
+    "hysteresis_grid": [
+      0.1,
+      0.15,
+      0.2
+    ],
+    "threshold_grid": [
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      0.975,
+      0.99,
+      0.995
+    ],
+    "temporal_grid": [
+      {
+        "ema_alpha": 1.0,
+        "on_consecutive": 1,
+        "off_consecutive": 1,
+        "min_cue_ms": 0,
+        "refractory_ms": 0
+      },
+      {
+        "ema_alpha": 1.0,
+        "on_consecutive": 2,
+        "off_consecutive": 2,
+        "min_cue_ms": 1000,
+        "refractory_ms": 1000
+      },
+      {
+        "ema_alpha": 0.5,
+        "on_consecutive": 1,
+        "off_consecutive": 2,
+        "min_cue_ms": 1000,
+        "refractory_ms": 1000
+      },
+      {
+        "ema_alpha": 0.5,
+        "on_consecutive": 2,
+        "off_consecutive": 2,
+        "min_cue_ms": 1000,
+        "refractory_ms": 2000
+      }
+    ],
+    "weight_grid": [
+      [
+        1.0,
+        0.0
+      ]
+    ],
+    "fp_budget_per_hour": 5.0,
+    "max_unnecessary_cue_min_per_hour": 2.0,
+    "epochs": 15,
+    "batch": 64,
+    "seed": 42,
+    "label": "freeze-at-window-end",
+    "latency_timeline": "window availability time (includes resampling lookahead)"
+  },
+  "elapsed_s": 294.4
+}

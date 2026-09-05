@@ -1,0 +1,16 @@
+{
+  "w_cnn": 1.0,
+  "w_fi": 0.0,
+  "threshold": 0.99,
+  "hysteresis": 0.1,
+  "ema_alpha": 1.0,
+  "on_consecutive": 1,
+  "off_consecutive": 1,
+  "min_cue_ms": 0,
+  "refractory_ms": 0,
+  "fp_budget_per_hour": 5.0,
+  "max_unnecessary_cue_min_per_hour": 2.0,
+  "budget_met": true,
+  "selection_tier": "declared_budget",
+  "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+}

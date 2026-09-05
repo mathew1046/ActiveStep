@@ -14,11 +14,11 @@ import numpy as np
 import pytest
 
 from src.train_nested import (
-    FI_ONLY_WEIGHTS,
     THRESHOLD_GRID,
-    WEIGHT_GRID,
+    candidate_weight_grid,
     grouped_inner_splits,
     run_fold,
+    subject_balanced_weights,
     summarize,
 )
 
@@ -42,6 +42,15 @@ def test_grouped_inner_splits_two_subjects():
     assert sorted(vals) == [2, 3]
 
 
+def test_subject_balanced_weights_equalize_participant_mass():
+    subjects = np.array([1, 1, 2, 2, 2, 2])
+    labels = np.array([0, 1, 0, 0, 0, 1])
+    weights = subject_balanced_weights(subjects, labels, positive_weight=3.0)
+    assert weights[labels == 1].mean() > weights[labels == 0].mean()
+    assert weights[subjects == 1].sum() == pytest.approx(weights[subjects == 2].sum())
+    assert weights.mean() == pytest.approx(1.0)
+
+
 @pytest.fixture(scope="module")
 def smoke_ctx(tmp_path_factory):
     if not DATASET.exists():
@@ -63,7 +72,7 @@ def smoke_ctx(tmp_path_factory):
 
 
 def test_nested_smoke_all_candidates(smoke_ctx):
-    for cand in ("fi_only", "logistic_fi", "cnn_fi"):
+    for cand in ("gated_fi", "logistic_endpoint", "cnn_endpoint"):
         results = [run_fold(smoke_ctx, cand, s) for s in smoke_ctx["subjects"]]
         out = Path(smoke_ctx["outdir"]) / "smoke"
         for r in results:
@@ -74,8 +83,12 @@ def test_nested_smoke_all_candidates(smoke_ctx):
             assert (fold / "predictions.npz").exists()
             # recipe values come from the predeclared grids
             assert r["recipe"]["threshold"] in THRESHOLD_GRID
-            grid = FI_ONLY_WEIGHTS if cand == "fi_only" else WEIGHT_GRID
+            grid = candidate_weight_grid(cand)
             assert (r["recipe"]["w_cnn"], r["recipe"]["w_fi"]) in grid
+            assert r["recipe"]["on_consecutive"] >= 1
+            assert r["recipe"]["selection_tier"] in {
+                "declared_budget", "relaxed_fallback", "minimum_burden_fallback",
+            }
             # protocol echo recorded
             assert r["protocol"]["fp_budget_per_hour"] == smoke_ctx["fp_budget"]
             # predictions saved with all channels

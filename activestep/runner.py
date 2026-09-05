@@ -61,6 +61,7 @@ class Runtime:
         backend: HardwareBackend | None = None,
         tflite_path: Path | None = None,
         scaler_path: Path | None = None,
+        recipe_path: Path | None = None,
     ):
         self.backend = backend or get_backend()
         self._scaler = StandardScaler().load(scaler_path or Path("models/final/scaler.json"))
@@ -68,13 +69,24 @@ class Runtime:
             model_path=str(tflite_path or Path("models/final/model_quantized.tflite"))
         )
         self._interpreter.allocate_tensors()
+        recipe_file = recipe_path or Path("models/final/recipe.json")
+        recipe = json.loads(recipe_file.read_text()) if recipe_file.exists() else {}
 
         self.detector = StreamDetector(
             DetectorConfig(
                 window_samples=WINDOW_SAMPLES,
                 hop_samples=int(SAMPLE_RATE * 0.25),
-                threshold=DEFAULT_PFOG_THRESHOLD,
-                hysteresis=0.15,
+                w_cnn=float(recipe.get("w_cnn", 0.6)),
+                w_fi=float(recipe.get("w_fi", 0.4)),
+                fi_threshold=float(recipe.get("fi_threshold", 2.0)),
+                fi_power_threshold=float(recipe.get("fi_power_threshold", 0.0)),
+                threshold=float(recipe.get("threshold", DEFAULT_PFOG_THRESHOLD)),
+                hysteresis=float(recipe.get("hysteresis", 0.15)),
+                ema_alpha=float(recipe.get("ema_alpha", 1.0)),
+                on_consecutive=int(recipe.get("on_consecutive", 1)),
+                off_consecutive=int(recipe.get("off_consecutive", 1)),
+                min_cue_ms=int(recipe.get("min_cue_ms", 0)),
+                refractory_ms=int(recipe.get("refractory_ms", 0)),
             ),
             predict_fn=_make_predict_fn(self._interpreter),
             scaler=self._scaler,
@@ -196,13 +208,17 @@ def main():
     parser.add_argument("--platform", default=None, help="mock | pi | unoq")
     parser.add_argument("--model", default="models/final/model_quantized.tflite")
     parser.add_argument("--scaler", default="models/final/scaler.json")
+    parser.add_argument("--recipe", default="models/final/recipe.json")
     parser.add_argument("--subject", type=int, default=1, help="Daphnet subject for replay")
     parser.add_argument("--duration", type=int, default=0, help="Run for N seconds (0=forever)")
     parser.add_argument("--verbose", action="store_true", help="Print every inference")
     args = parser.parse_args()
 
     backend = get_backend(args.platform)
-    rt = Runtime(backend=backend, tflite_path=Path(args.model), scaler_path=Path(args.scaler))
+    rt = Runtime(
+        backend=backend, tflite_path=Path(args.model),
+        scaler_path=Path(args.scaler), recipe_path=Path(args.recipe),
+    )
     rt._verbose = args.verbose
     try:
         if args.duration > 0:

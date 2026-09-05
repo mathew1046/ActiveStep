@@ -20,9 +20,9 @@ from typing import Callable
 import numpy as np
 
 try:
-    from src.features import compute_freeze_index, p_fog_combined
+    from src.features import freeze_index_components, p_fog_combined
 except ImportError:  # imported as a top-level module
-    from features import compute_freeze_index, p_fog_combined
+    from features import freeze_index_components, p_fog_combined
 
 
 @dataclass
@@ -32,9 +32,15 @@ class DetectorConfig:
     w_cnn: float = 0.6
     w_fi: float = 0.4
     fi_threshold: float = 2.0
+    fi_power_threshold: float = 0.0
     cnn_threshold: float = 0.5
     threshold: float = 0.7   # cue ON threshold for the combined score
     hysteresis: float = 0.15 # cue OFF at threshold - hysteresis
+    ema_alpha: float = 1.0
+    on_consecutive: int = 1
+    off_consecutive: int = 1
+    min_cue_ms: int = 0
+    refractory_ms: int = 0
 
 
 def combine_scores(p_cnn, fi, cfg: DetectorConfig):
@@ -56,34 +62,68 @@ class CueEvent:
 
 
 class CueFSM:
-    """Hysteresis cue state machine over timestamped scores.
+    """Causal filtered hysteresis state machine over timestamped scores."""
 
-    Cue turns ON when score >= threshold, OFF when score < threshold - hysteresis.
-    """
-
-    def __init__(self, threshold: float, hysteresis: float):
+    def __init__(
+        self,
+        threshold: float,
+        hysteresis: float,
+        ema_alpha: float = 1.0,
+        on_consecutive: int = 1,
+        off_consecutive: int = 1,
+        min_cue_ms: int = 0,
+        refractory_ms: int = 0,
+    ):
+        if not 0.0 < ema_alpha <= 1.0:
+            raise ValueError("ema_alpha must be in (0, 1]")
         self.threshold = float(threshold)
         self.hysteresis = float(hysteresis)
+        self.ema_alpha = float(ema_alpha)
+        self.on_consecutive = max(1, int(on_consecutive))
+        self.off_consecutive = max(1, int(off_consecutive))
+        self.min_cue_ms = max(0, int(min_cue_ms))
+        self.refractory_ms = max(0, int(refractory_ms))
         self.cueing = False
         self.cue_start_ms: int | None = None
         self.last_t_ms: int | None = None
+        self.last_score: float | None = None
+        self._on_count = 0
+        self._off_count = 0
+        self._refractory_until_ms = 0
 
     def push(self, t_ms: int, score: float) -> list[CueEvent]:
         events: list[CueEvent] = []
-        if not self.cueing and score >= self.threshold:
-            self.cueing = True
-            self.cue_start_ms = int(t_ms)
-            events.append(CueEvent("cue_start", int(t_ms), float(score)))
-        elif self.cueing and score < self.threshold - self.hysteresis:
-            self.cueing = False
-            events.append(
-                CueEvent(
-                    "cue_stop", int(t_ms), float(score),
-                    recovery_ms=int(t_ms) - int(self.cue_start_ms),
+        t_ms = int(t_ms)
+        score = float(score)
+        self.last_score = (
+            score
+            if self.last_score is None
+            else self.ema_alpha * score + (1.0 - self.ema_alpha) * self.last_score
+        )
+        if not self.cueing:
+            eligible = t_ms >= self._refractory_until_ms
+            self._on_count = self._on_count + 1 if eligible and self.last_score >= self.threshold else 0
+            if self._on_count >= self.on_consecutive:
+                self.cueing = True
+                self.cue_start_ms = t_ms
+                self._on_count = 0
+                events.append(CueEvent("cue_start", t_ms, self.last_score))
+        else:
+            can_stop = t_ms - int(self.cue_start_ms) >= self.min_cue_ms
+            off_threshold = max(0.0, self.threshold - self.hysteresis)
+            self._off_count = self._off_count + 1 if can_stop and self.last_score < off_threshold else 0
+            if self._off_count >= self.off_consecutive:
+                self.cueing = False
+                events.append(
+                    CueEvent(
+                        "cue_stop", t_ms, self.last_score,
+                        recovery_ms=t_ms - int(self.cue_start_ms),
+                    )
                 )
-            )
-            self.cue_start_ms = None
-        self.last_t_ms = int(t_ms)
+                self.cue_start_ms = None
+                self._off_count = 0
+                self._refractory_until_ms = t_ms + self.refractory_ms
+        self.last_t_ms = t_ms
         return events
 
     def finish(self, t_end_ms: int | None = None) -> list[CueEvent]:
@@ -98,19 +138,26 @@ class CueFSM:
             censored=True,
         )
         self.cue_start_ms = None
+        self._off_count = 0
         return [ev]
 
     def reset(self) -> None:
         self.cueing = False
         self.cue_start_ms = None
         self.last_t_ms = None
+        self.last_score = None
+        self._on_count = 0
+        self._off_count = 0
+        self._refractory_until_ms = 0
 
 
 @dataclass
 class Decision:
     t_ms: int
     fi: float
+    power: float
     p_cnn: float | None
+    raw_score: float
     score: float
     cueing: bool
     events: list[CueEvent] = field(default_factory=list)
@@ -137,7 +184,15 @@ class StreamDetector:
         self.threshold_offset = float(threshold_offset)
         self._ring: deque[np.ndarray] = deque(maxlen=config.window_samples)
         self._since_last = 0
-        self._fsm = CueFSM(self.effective_threshold, config.hysteresis)
+        self._fsm = CueFSM(
+            self.effective_threshold,
+            config.hysteresis,
+            config.ema_alpha,
+            config.on_consecutive,
+            config.off_consecutive,
+            config.min_cue_ms,
+            config.refractory_ms,
+        )
         self._window = np.zeros((config.window_samples, 3), dtype=np.float32)
 
     @property
@@ -157,18 +212,21 @@ class StreamDetector:
         self._since_last = 0
 
         win = np.stack(self._ring, axis=0)  # (W, 3) raw mg
-        fi = float(compute_freeze_index(win[None, ...], fs=100)[0])
+        fi_arr, power_arr = freeze_index_components(win[None], fs=100, aggregate_axes=True)
+        power = float(power_arr[0])
+        fi = float(fi_arr[0]) if power >= self.cfg.fi_power_threshold else 0.0
 
         p_cnn = None
         if self.predict_fn is not None:
             x = self.scaler.transform(win) if self.scaler is not None else win
             p_cnn = float(np.asarray(self.predict_fn(x[None, ...].astype(np.float32))).ravel()[0])
 
-        score = float(combine_scores(p_cnn if p_cnn is not None else 0.0, fi, self.cfg))
+        raw_score = float(combine_scores(p_cnn if p_cnn is not None else 0.0, fi, self.cfg))
         self._fsm.threshold = self.effective_threshold
-        events = self._fsm.push(int(t_ms), score)
+        events = self._fsm.push(int(t_ms), raw_score)
         return Decision(
-            t_ms=int(t_ms), fi=fi, p_cnn=p_cnn, score=score,
+            t_ms=int(t_ms), fi=fi, power=power, p_cnn=p_cnn,
+            raw_score=raw_score, score=float(self._fsm.last_score),
             cueing=self._fsm.cueing, events=events,
         )
 

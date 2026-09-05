@@ -137,6 +137,23 @@ predictions, results, `summary.json`) and `assessment_report.md`.
 detection results on Daphnet. They do not establish real-world wearable
 accuracy, cueing effectiveness, or clinical benefit.
 
+### Current assessment status
+
+The completed `improved_v2` assessment did not identify a deployment-ready
+candidate:
+
+| Candidate | Event sensitivity | False cues / non-FOG h | Mean delay |
+|---|---:|---:|---:|
+| `gated_fi` | 0.384 | 19.236 | 3.55 s |
+| `logistic_endpoint` | 0.021 | 3.132 | 8.83 s |
+| `cnn_endpoint` | 0.173 | 6.263 | 3.56 s |
+
+All three fail the predeclared minimum criteria (sensitivity >= 0.65,
+false cues <= 10/h, and mean delay <= 1.5 s). See
+`models/nested/improved_v2/assessment_report.md`. Do not promote these
+artifacts into `models/final/`; the next model phase is chronological,
+wearer-specific calibration followed by validation on new recordings.
+
 ## Model notes
 
 - Input: 2 s @ 100 Hz, 3-axis shank acceleration (mg), z-scored

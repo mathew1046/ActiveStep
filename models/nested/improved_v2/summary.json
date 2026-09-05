@@ -1,0 +1,1277 @@
+{
+  "gated_fi": {
+    "candidate": "gated_fi",
+    "tol_0s": {
+      "pooled": {
+        "n_participants": 10,
+        "n_participants_with_events": 8,
+        "total_events": 237,
+        "total_detected": 91,
+        "event_sensitivity": 0.38396624472573837,
+        "total_nonfog_hours": 4.470696388888889,
+        "total_false_cue_starts": 86,
+        "false_cue_starts_per_nonfog_hour": 19.23637673399999
+      },
+      "macro": {
+        "event_sensitivity": 0.3853839526587974,
+        "false_cue_starts_per_nonfog_hour": 18.777621638837246
+      },
+      "bootstrap": {
+        "n_boot": 1000,
+        "seed": 42,
+        "event_sensitivity_ci95": [
+          0.27091438639387294,
+          0.496590909090909
+        ],
+        "false_cues_per_hour_ci95": [
+          7.134207777251421,
+          34.02232748289274
+        ]
+      }
+    },
+    "jitter_tol_0.3s": {
+      "pooled": {
+        "n_participants": 10,
+        "n_participants_with_events": 8,
+        "total_events": 237,
+        "total_detected": 96,
+        "event_sensitivity": 0.4050632911392405,
+        "total_nonfog_hours": 4.470696388888889,
+        "total_false_cue_starts": 81,
+        "false_cue_starts_per_nonfog_hour": 18.1179827378372
+      },
+      "macro": {
+        "event_sensitivity": 0.4048752087571963,
+        "false_cue_starts_per_nonfog_hour": 17.629980426800383
+      },
+      "bootstrap": {
+        "n_boot": 1000,
+        "seed": 42,
+        "event_sensitivity_ci95": [
+          0.2875957793582254,
+          0.519301226366888
+        ],
+        "false_cues_per_hour_ci95": [
+          6.332932259392714,
+          32.369455998531244
+        ]
+      }
+    },
+    "pooled_window_pr_auc_endpoint": 0.4440712407866741,
+    "pooled_mean_detection_delay_s": 3.5504285714285713,
+    "pooled_unnecessary_cue_min_per_nonfog_hour": 0.9729170331219215,
+    "engineering_acceptance": {
+      "minimum_viable_pass": false,
+      "criteria": {
+        "event_sensitivity_min": 0.65,
+        "false_cue_starts_per_nonfog_hour_max": 10.0,
+        "mean_detection_delay_s_max": 1.5,
+        "unnecessary_cue_min_per_nonfog_hour_max": 2.0
+      }
+    },
+    "folds": [
+      {
+        "subject": 1,
+        "n_events": 23,
+        "n_detected": 10,
+        "event_sensitivity": 0.43478260869565216,
+        "n_false_cue_starts": 22,
+        "false_cue_starts_per_nonfog_hour": 44.111504079757154,
+        "nonfog_hours": 0.4987361111111112,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.995,
+          "hysteresis": 0.1,
+          "ema_alpha": 0.5,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 2000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": false,
+          "selection_tier": "relaxed_fallback",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.45243128964059204,
+        "delay_mean_s": 2.6699
+      },
+      {
+        "subject": 2,
+        "n_events": 24,
+        "n_detected": 9,
+        "event_sensitivity": 0.375,
+        "n_false_cue_starts": 2,
+        "false_cue_starts_per_nonfog_hour": 5.8363818971645705,
+        "nonfog_hours": 0.34267805555555564,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.995,
+          "hysteresis": 0.2,
+          "ema_alpha": 0.5,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 2000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": false,
+          "selection_tier": "minimum_burden_fallback",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.5038167938931298,
+        "delay_mean_s": 4.026555555555556
+      },
+      {
+        "subject": 3,
+        "n_events": 49,
+        "n_detected": 26,
+        "event_sensitivity": 0.5306122448979592,
+        "n_false_cue_starts": 29,
+        "false_cue_starts_per_nonfog_hour": 60.57441253263707,
+        "nonfog_hours": 0.47875000000000006,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.99,
+          "hysteresis": 0.2,
+          "ema_alpha": 0.5,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 2000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": false,
+          "selection_tier": "relaxed_fallback",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.606060606060606,
+        "delay_mean_s": 2.8537307692307694
+      },
+      {
+        "subject": 4,
+        "n_events": 0,
+        "n_detected": 0,
+        "event_sensitivity": null,
+        "n_false_cue_starts": 0,
+        "false_cue_starts_per_nonfog_hour": 0.0,
+        "nonfog_hours": 0.5750083333333333,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.995,
+          "hysteresis": 0.2,
+          "ema_alpha": 0.5,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 2000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": false,
+          "selection_tier": "relaxed_fallback",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.0,
+        "delay_mean_s": null
+      },
+      {
+        "subject": 5,
+        "n_events": 66,
+        "n_detected": 14,
+        "event_sensitivity": 0.21212121212121213,
+        "n_false_cue_starts": 10,
+        "false_cue_starts_per_nonfog_hour": 22.28332254242806,
+        "nonfog_hours": 0.4487661111111112,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.995,
+          "hysteresis": 0.1,
+          "ema_alpha": 0.5,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 2000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": false,
+          "selection_tier": "relaxed_fallback",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.37048080506895265,
+        "delay_mean_s": 3.5949999999999998
+      },
+      {
+        "subject": 6,
+        "n_events": 10,
+        "n_detected": 1,
+        "event_sensitivity": 0.1,
+        "n_false_cue_starts": 1,
+        "false_cue_starts_per_nonfog_hour": 1.936919899215601,
+        "nonfog_hours": 0.5162836111111112,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.995,
+          "hysteresis": 0.15,
+          "ema_alpha": 0.5,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 2000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": false,
+          "selection_tier": "relaxed_fallback",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.18838304552590265,
+        "delay_mean_s": 2.303
+      },
+      {
+        "subject": 7,
+        "n_events": 24,
+        "n_detected": 9,
+        "event_sensitivity": 0.375,
+        "n_false_cue_starts": 9,
+        "false_cue_starts_per_nonfog_hour": 21.196226025040325,
+        "nonfog_hours": 0.424603888888889,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.995,
+          "hysteresis": 0.1,
+          "ema_alpha": 0.5,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 2000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": false,
+          "selection_tier": "relaxed_fallback",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.5181950509461427,
+        "delay_mean_s": 2.486666666666667
+      },
+      {
+        "subject": 8,
+        "n_events": 14,
+        "n_detected": 7,
+        "event_sensitivity": 0.5,
+        "n_false_cue_starts": 0,
+        "false_cue_starts_per_nonfog_hour": 0.0,
+        "nonfog_hours": 0.1580933333333334,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.995,
+          "hysteresis": 0.1,
+          "ema_alpha": 0.5,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 2000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": false,
+          "selection_tier": "relaxed_fallback",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.4219178082191781,
+        "delay_mean_s": 6.606428571428572
+      },
+      {
+        "subject": 9,
+        "n_events": 27,
+        "n_detected": 15,
+        "event_sensitivity": 0.5555555555555556,
+        "n_false_cue_starts": 13,
+        "false_cue_starts_per_nonfog_hour": 31.837449412129658,
+        "nonfog_hours": 0.4083241666666667,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.995,
+          "hysteresis": 0.1,
+          "ema_alpha": 0.5,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 2000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": false,
+          "selection_tier": "relaxed_fallback",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.5526024363233666,
+        "delay_mean_s": 4.313066666666667
+      },
+      {
+        "subject": 10,
+        "n_events": 0,
+        "n_detected": 0,
+        "event_sensitivity": null,
+        "n_false_cue_starts": 0,
+        "false_cue_starts_per_nonfog_hour": 0.0,
+        "nonfog_hours": 0.6194527777777779,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.995,
+          "hysteresis": 0.2,
+          "ema_alpha": 0.5,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 2000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": false,
+          "selection_tier": "minimum_burden_fallback",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.0,
+        "delay_mean_s": null
+      }
+    ],
+    "protocol": {
+      "window_s": 2.0,
+      "train_hop_s": 0.5,
+      "eval_hop_s": 0.25,
+      "hysteresis_grid": [
+        0.1,
+        0.15,
+        0.2
+      ],
+      "threshold_grid": [
+        0.3,
+        0.35,
+        0.4,
+        0.45,
+        0.5,
+        0.55,
+        0.6,
+        0.65,
+        0.7,
+        0.75,
+        0.8,
+        0.85,
+        0.9,
+        0.95,
+        0.975,
+        0.99,
+        0.995
+      ],
+      "temporal_grid": [
+        {
+          "ema_alpha": 1.0,
+          "on_consecutive": 1,
+          "off_consecutive": 1,
+          "min_cue_ms": 0,
+          "refractory_ms": 0
+        },
+        {
+          "ema_alpha": 1.0,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 1000
+        },
+        {
+          "ema_alpha": 0.5,
+          "on_consecutive": 1,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 1000
+        },
+        {
+          "ema_alpha": 0.5,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 2000
+        }
+      ],
+      "weight_grid": [
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "fp_budget_per_hour": 5.0,
+      "max_unnecessary_cue_min_per_hour": 2.0,
+      "epochs": 15,
+      "batch": 64,
+      "seed": 42,
+      "label": "freeze-at-window-end",
+      "latency_timeline": "window availability time (includes resampling lookahead)"
+    },
+    "versions": {
+      "python": "3.11.16",
+      "numpy": "2.0.2",
+      "tensorflow": "2.18.1",
+      "sklearn": "1.9.0"
+    },
+    "dataset": {
+      "n_files": 17,
+      "combined_sha256": "4fbe6a6a56f842c4554b6c331cf1f8762e1d0c1b96aeb53ea8d5fe1dbad27f02"
+    }
+  },
+  "logistic_endpoint": {
+    "candidate": "logistic_endpoint",
+    "tol_0s": {
+      "pooled": {
+        "n_participants": 10,
+        "n_participants_with_events": 8,
+        "total_events": 237,
+        "total_detected": 5,
+        "event_sensitivity": 0.02109704641350211,
+        "total_nonfog_hours": 4.470696388888889,
+        "total_false_cue_starts": 14,
+        "false_cue_starts_per_nonfog_hour": 3.1315031892558123
+      },
+      "macro": {
+        "event_sensitivity": 0.020554181268466983,
+        "false_cue_starts_per_nonfog_hour": 2.77230149512936
+      },
+      "bootstrap": {
+        "n_boot": 1000,
+        "seed": 42,
+        "event_sensitivity_ci95": [
+          0.007632142030996993,
+          0.035720709146968135
+        ],
+        "false_cues_per_hour_ci95": [
+          0.0,
+          6.324065687432363
+        ]
+      }
+    },
+    "jitter_tol_0.3s": {
+      "pooled": {
+        "n_participants": 10,
+        "n_participants_with_events": 8,
+        "total_events": 237,
+        "total_detected": 6,
+        "event_sensitivity": 0.02531645569620253,
+        "total_nonfog_hours": 4.470696388888889,
+        "total_false_cue_starts": 13,
+        "false_cue_starts_per_nonfog_hour": 2.9078243900232543
+      },
+      "macro": {
+        "event_sensitivity": 0.023105201676630247,
+        "false_cue_starts_per_nonfog_hour": 2.56342421053406
+      },
+      "bootstrap": {
+        "n_boot": 1000,
+        "seed": 42,
+        "event_sensitivity_ci95": [
+          0.007632142030996993,
+          0.045871559633027525
+        ],
+        "false_cues_per_hour_ci95": [
+          0.0,
+          6.1193415194781
+        ]
+      }
+    },
+    "pooled_window_pr_auc_endpoint": 0.38191132594800886,
+    "pooled_mean_detection_delay_s": 8.8308,
+    "pooled_unnecessary_cue_min_per_nonfog_hour": 0.10925963746513018,
+    "engineering_acceptance": {
+      "minimum_viable_pass": false,
+      "criteria": {
+        "event_sensitivity_min": 0.65,
+        "false_cue_starts_per_nonfog_hour_max": 10.0,
+        "mean_detection_delay_s_max": 1.5,
+        "unnecessary_cue_min_per_nonfog_hour_max": 2.0
+      }
+    },
+    "folds": [
+      {
+        "subject": 1,
+        "n_events": 23,
+        "n_detected": 0,
+        "event_sensitivity": 0.0,
+        "n_false_cue_starts": 0,
+        "false_cue_starts_per_nonfog_hour": 0.0,
+        "nonfog_hours": 0.4987361111111112,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.99,
+          "hysteresis": 0.1,
+          "ema_alpha": 0.5,
+          "on_consecutive": 1,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 1000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.028368794326241138,
+        "delay_mean_s": null
+      },
+      {
+        "subject": 2,
+        "n_events": 24,
+        "n_detected": 0,
+        "event_sensitivity": 0.0,
+        "n_false_cue_starts": 0,
+        "false_cue_starts_per_nonfog_hour": 0.0,
+        "nonfog_hours": 0.34267805555555564,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.975,
+          "hysteresis": 0.1,
+          "ema_alpha": 0.5,
+          "on_consecutive": 1,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 1000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": null,
+        "delay_mean_s": null
+      },
+      {
+        "subject": 3,
+        "n_events": 49,
+        "n_detected": 2,
+        "event_sensitivity": 0.04081632653061224,
+        "n_false_cue_starts": 2,
+        "false_cue_starts_per_nonfog_hour": 4.177545691906005,
+        "nonfog_hours": 0.47875000000000006,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.975,
+          "hysteresis": 0.1,
+          "ema_alpha": 0.5,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 2000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.04845446950710108,
+        "delay_mean_s": 5.029
+      },
+      {
+        "subject": 4,
+        "n_events": 0,
+        "n_detected": 0,
+        "event_sensitivity": null,
+        "n_false_cue_starts": 0,
+        "false_cue_starts_per_nonfog_hour": 0.0,
+        "nonfog_hours": 0.5750083333333333,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.99,
+          "hysteresis": 0.1,
+          "ema_alpha": 1.0,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 1000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": null,
+        "delay_mean_s": null
+      },
+      {
+        "subject": 5,
+        "n_events": 66,
+        "n_detected": 1,
+        "event_sensitivity": 0.015151515151515152,
+        "n_false_cue_starts": 0,
+        "false_cue_starts_per_nonfog_hour": 0.0,
+        "nonfog_hours": 0.4487661111111112,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.99,
+          "hysteresis": 0.1,
+          "ema_alpha": 1.0,
+          "on_consecutive": 1,
+          "off_consecutive": 1,
+          "min_cue_ms": 0,
+          "refractory_ms": 0,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.003161222339304531,
+        "delay_mean_s": 5.381
+      },
+      {
+        "subject": 6,
+        "n_events": 10,
+        "n_detected": 0,
+        "event_sensitivity": 0.0,
+        "n_false_cue_starts": 0,
+        "false_cue_starts_per_nonfog_hour": 0.0,
+        "nonfog_hours": 0.5162836111111112,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.975,
+          "hysteresis": 0.15,
+          "ema_alpha": 0.5,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 2000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": null,
+        "delay_mean_s": null
+      },
+      {
+        "subject": 7,
+        "n_events": 24,
+        "n_detected": 0,
+        "event_sensitivity": 0.0,
+        "n_false_cue_starts": 0,
+        "false_cue_starts_per_nonfog_hour": 0.0,
+        "nonfog_hours": 0.424603888888889,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.975,
+          "hysteresis": 0.1,
+          "ema_alpha": 0.5,
+          "on_consecutive": 1,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 1000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.0,
+        "delay_mean_s": null
+      },
+      {
+        "subject": 8,
+        "n_events": 14,
+        "n_detected": 1,
+        "event_sensitivity": 0.07142857142857142,
+        "n_false_cue_starts": 0,
+        "false_cue_starts_per_nonfog_hour": 0.0,
+        "nonfog_hours": 0.1580933333333334,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.95,
+          "hysteresis": 0.1,
+          "ema_alpha": 0.5,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 2000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.04141291108404386,
+        "delay_mean_s": 14.428
+      },
+      {
+        "subject": 9,
+        "n_events": 27,
+        "n_detected": 1,
+        "event_sensitivity": 0.037037037037037035,
+        "n_false_cue_starts": 5,
+        "false_cue_starts_per_nonfog_hour": 12.245172850819099,
+        "nonfog_hours": 0.4083241666666667,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.95,
+          "hysteresis": 0.1,
+          "ema_alpha": 0.5,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 2000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.015625,
+        "delay_mean_s": 14.287
+      },
+      {
+        "subject": 10,
+        "n_events": 0,
+        "n_detected": 0,
+        "event_sensitivity": null,
+        "n_false_cue_starts": 7,
+        "false_cue_starts_per_nonfog_hour": 11.300296408568494,
+        "nonfog_hours": 0.6194527777777779,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.95,
+          "hysteresis": 0.15,
+          "ema_alpha": 0.5,
+          "on_consecutive": 1,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 1000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.0,
+        "delay_mean_s": null
+      }
+    ],
+    "protocol": {
+      "window_s": 2.0,
+      "train_hop_s": 0.5,
+      "eval_hop_s": 0.25,
+      "hysteresis_grid": [
+        0.1,
+        0.15,
+        0.2
+      ],
+      "threshold_grid": [
+        0.3,
+        0.35,
+        0.4,
+        0.45,
+        0.5,
+        0.55,
+        0.6,
+        0.65,
+        0.7,
+        0.75,
+        0.8,
+        0.85,
+        0.9,
+        0.95,
+        0.975,
+        0.99,
+        0.995
+      ],
+      "temporal_grid": [
+        {
+          "ema_alpha": 1.0,
+          "on_consecutive": 1,
+          "off_consecutive": 1,
+          "min_cue_ms": 0,
+          "refractory_ms": 0
+        },
+        {
+          "ema_alpha": 1.0,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 1000
+        },
+        {
+          "ema_alpha": 0.5,
+          "on_consecutive": 1,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 1000
+        },
+        {
+          "ema_alpha": 0.5,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 2000
+        }
+      ],
+      "weight_grid": [
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "fp_budget_per_hour": 5.0,
+      "max_unnecessary_cue_min_per_hour": 2.0,
+      "epochs": 15,
+      "batch": 64,
+      "seed": 42,
+      "label": "freeze-at-window-end",
+      "latency_timeline": "window availability time (includes resampling lookahead)"
+    },
+    "versions": {
+      "python": "3.11.16",
+      "numpy": "2.0.2",
+      "tensorflow": "2.18.1",
+      "sklearn": "1.9.0"
+    },
+    "dataset": {
+      "n_files": 17,
+      "combined_sha256": "4fbe6a6a56f842c4554b6c331cf1f8762e1d0c1b96aeb53ea8d5fe1dbad27f02"
+    }
+  },
+  "cnn_endpoint": {
+    "candidate": "cnn_endpoint",
+    "tol_0s": {
+      "pooled": {
+        "n_participants": 10,
+        "n_participants_with_events": 8,
+        "total_events": 237,
+        "total_detected": 41,
+        "event_sensitivity": 0.1729957805907173,
+        "total_nonfog_hours": 4.470696388888889,
+        "total_false_cue_starts": 28,
+        "false_cue_starts_per_nonfog_hour": 6.263006378511625
+      },
+      "macro": {
+        "event_sensitivity": 0.20551250638595359,
+        "false_cue_starts_per_nonfog_hour": 5.960157656864278
+      },
+      "bootstrap": {
+        "n_boot": 1000,
+        "seed": 42,
+        "event_sensitivity_ci95": [
+          0.07049844127815191,
+          0.29452595529920694
+        ],
+        "false_cues_per_hour_ci95": [
+          0.7398492695762781,
+          15.319611881883201
+        ]
+      }
+    },
+    "jitter_tol_0.3s": {
+      "pooled": {
+        "n_participants": 10,
+        "n_participants_with_events": 8,
+        "total_events": 237,
+        "total_detected": 43,
+        "event_sensitivity": 0.18143459915611815,
+        "total_nonfog_hours": 4.470696388888889,
+        "total_false_cue_starts": 26,
+        "false_cue_starts_per_nonfog_hour": 5.815648780046509
+      },
+      "macro": {
+        "event_sensitivity": 0.2134983094028125,
+        "false_cue_starts_per_nonfog_hour": 5.550773535542809
+      },
+      "bootstrap": {
+        "n_boot": 1000,
+        "seed": 42,
+        "event_sensitivity_ci95": [
+          0.07093610097827889,
+          0.3083225304640912
+        ],
+        "false_cues_per_hour_ci95": [
+          0.72025615039173,
+          14.445061015860448
+        ]
+      }
+    },
+    "pooled_window_pr_auc_endpoint": 0.4103729333462728,
+    "pooled_mean_detection_delay_s": 3.562951219512195,
+    "pooled_unnecessary_cue_min_per_nonfog_hour": 0.864186768814975,
+    "engineering_acceptance": {
+      "minimum_viable_pass": false,
+      "criteria": {
+        "event_sensitivity_min": 0.65,
+        "false_cue_starts_per_nonfog_hour_max": 10.0,
+        "mean_detection_delay_s_max": 1.5,
+        "unnecessary_cue_min_per_nonfog_hour_max": 2.0
+      }
+    },
+    "folds": [
+      {
+        "subject": 1,
+        "n_events": 23,
+        "n_detected": 8,
+        "event_sensitivity": 0.34782608695652173,
+        "n_false_cue_starts": 4,
+        "false_cue_starts_per_nonfog_hour": 8.020273469046755,
+        "nonfog_hours": 0.4987361111111112,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.95,
+          "hysteresis": 0.15,
+          "ema_alpha": 1.0,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 1000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.42732049036777586,
+        "delay_mean_s": 2.5821249999999996
+      },
+      {
+        "subject": 2,
+        "n_events": 24,
+        "n_detected": 4,
+        "event_sensitivity": 0.16666666666666666,
+        "n_false_cue_starts": 2,
+        "false_cue_starts_per_nonfog_hour": 5.8363818971645705,
+        "nonfog_hours": 0.34267805555555564,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.9,
+          "hysteresis": 0.2,
+          "ema_alpha": 0.5,
+          "on_consecutive": 1,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 1000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.178168130489335,
+        "delay_mean_s": 6.415749999999999
+      },
+      {
+        "subject": 3,
+        "n_events": 49,
+        "n_detected": 15,
+        "event_sensitivity": 0.30612244897959184,
+        "n_false_cue_starts": 20,
+        "false_cue_starts_per_nonfog_hour": 41.77545691906005,
+        "nonfog_hours": 0.47875000000000006,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.95,
+          "hysteresis": 0.15,
+          "ema_alpha": 0.5,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 2000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.5914585012087027,
+        "delay_mean_s": 2.6422000000000003
+      },
+      {
+        "subject": 4,
+        "n_events": 0,
+        "n_detected": 0,
+        "event_sensitivity": null,
+        "n_false_cue_starts": 0,
+        "false_cue_starts_per_nonfog_hour": 0.0,
+        "nonfog_hours": 0.5750083333333333,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.975,
+          "hysteresis": 0.1,
+          "ema_alpha": 1.0,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 1000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": null,
+        "delay_mean_s": null
+      },
+      {
+        "subject": 5,
+        "n_events": 66,
+        "n_detected": 1,
+        "event_sensitivity": 0.015151515151515152,
+        "n_false_cue_starts": 0,
+        "false_cue_starts_per_nonfog_hour": 0.0,
+        "nonfog_hours": 0.4487661111111112,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.99,
+          "hysteresis": 0.15,
+          "ema_alpha": 1.0,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 1000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.003161222339304531,
+        "delay_mean_s": 1.709
+      },
+      {
+        "subject": 6,
+        "n_events": 10,
+        "n_detected": 1,
+        "event_sensitivity": 0.1,
+        "n_false_cue_starts": 0,
+        "false_cue_starts_per_nonfog_hour": 0.0,
+        "nonfog_hours": 0.5162836111111112,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.95,
+          "hysteresis": 0.1,
+          "ema_alpha": 1.0,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 1000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.03717472118959108,
+        "delay_mean_s": 28.896
+      },
+      {
+        "subject": 7,
+        "n_events": 24,
+        "n_detected": 5,
+        "event_sensitivity": 0.20833333333333334,
+        "n_false_cue_starts": 1,
+        "false_cue_starts_per_nonfog_hour": 2.3551362250044807,
+        "nonfog_hours": 0.424603888888889,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.975,
+          "hysteresis": 0.2,
+          "ema_alpha": 1.0,
+          "on_consecutive": 1,
+          "off_consecutive": 1,
+          "min_cue_ms": 0,
+          "refractory_ms": 0,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.11078717201166181,
+        "delay_mean_s": 1.165
+      },
+      {
+        "subject": 8,
+        "n_events": 14,
+        "n_detected": 7,
+        "event_sensitivity": 0.5,
+        "n_false_cue_starts": 0,
+        "false_cue_starts_per_nonfog_hour": 0.0,
+        "nonfog_hours": 0.1580933333333334,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.95,
+          "hysteresis": 0.1,
+          "ema_alpha": 0.5,
+          "on_consecutive": 1,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 1000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.13824884792626727,
+        "delay_mean_s": 3.3854285714285717
+      },
+      {
+        "subject": 9,
+        "n_events": 27,
+        "n_detected": 0,
+        "event_sensitivity": 0.0,
+        "n_false_cue_starts": 0,
+        "false_cue_starts_per_nonfog_hour": 0.0,
+        "nonfog_hours": 0.4083241666666667,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.95,
+          "hysteresis": 0.1,
+          "ema_alpha": 1.0,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 1000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.020128087831655993,
+        "delay_mean_s": null
+      },
+      {
+        "subject": 10,
+        "n_events": 0,
+        "n_detected": 0,
+        "event_sensitivity": null,
+        "n_false_cue_starts": 1,
+        "false_cue_starts_per_nonfog_hour": 1.6143280583669275,
+        "nonfog_hours": 0.6194527777777779,
+        "recipe": {
+          "w_cnn": 1.0,
+          "w_fi": 0.0,
+          "threshold": 0.975,
+          "hysteresis": 0.2,
+          "ema_alpha": 1.0,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 1000,
+          "fp_budget_per_hour": 5.0,
+          "max_unnecessary_cue_min_per_hour": 2.0,
+          "budget_met": true,
+          "selection_tier": "declared_budget",
+          "selected_by": "max pooled event sensitivity under cue-start and cue-duty budgets (inner OOF)"
+        },
+        "window_f1_endpoint": 0.0,
+        "delay_mean_s": null
+      }
+    ],
+    "protocol": {
+      "window_s": 2.0,
+      "train_hop_s": 0.5,
+      "eval_hop_s": 0.25,
+      "hysteresis_grid": [
+        0.1,
+        0.15,
+        0.2
+      ],
+      "threshold_grid": [
+        0.3,
+        0.35,
+        0.4,
+        0.45,
+        0.5,
+        0.55,
+        0.6,
+        0.65,
+        0.7,
+        0.75,
+        0.8,
+        0.85,
+        0.9,
+        0.95,
+        0.975,
+        0.99,
+        0.995
+      ],
+      "temporal_grid": [
+        {
+          "ema_alpha": 1.0,
+          "on_consecutive": 1,
+          "off_consecutive": 1,
+          "min_cue_ms": 0,
+          "refractory_ms": 0
+        },
+        {
+          "ema_alpha": 1.0,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 1000
+        },
+        {
+          "ema_alpha": 0.5,
+          "on_consecutive": 1,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 1000
+        },
+        {
+          "ema_alpha": 0.5,
+          "on_consecutive": 2,
+          "off_consecutive": 2,
+          "min_cue_ms": 1000,
+          "refractory_ms": 2000
+        }
+      ],
+      "weight_grid": [
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "fp_budget_per_hour": 5.0,
+      "max_unnecessary_cue_min_per_hour": 2.0,
+      "epochs": 15,
+      "batch": 64,
+      "seed": 42,
+      "label": "freeze-at-window-end",
+      "latency_timeline": "window availability time (includes resampling lookahead)"
+    },
+    "versions": {
+      "python": "3.11.16",
+      "numpy": "2.0.2",
+      "tensorflow": "2.18.1",
+      "sklearn": "1.9.0"
+    },
+    "dataset": {
+      "n_files": 17,
+      "combined_sha256": "4fbe6a6a56f842c4554b6c331cf1f8762e1d0c1b96aeb53ea8d5fe1dbad27f02"
+    }
+  }
+}
