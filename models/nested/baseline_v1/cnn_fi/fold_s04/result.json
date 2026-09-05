@@ -1,0 +1,196 @@
+{
+  "n_runs": 1,
+  "n_events": 0,
+  "n_detected": 0,
+  "event_sensitivity": null,
+  "detected_within": {
+    "0.5s": 0,
+    "1.0s": 0,
+    "2.0s": 0
+  },
+  "detection_delay": {
+    "n": 0,
+    "mean_s": null,
+    "median_s": null,
+    "p90_s": null,
+    "max_s": null
+  },
+  "n_false_cue_starts": 0,
+  "nonfog_hours": 0.5750083333333333,
+  "false_cue_starts_per_nonfog_hour": 0.0,
+  "unnecessary_cue_min_per_nonfog_hour": 0.0,
+  "n_cue_starts": 0,
+  "repeated_cue_onsets": 0,
+  "n_cued_during_event": 0,
+  "cue_stop_delay": {
+    "n": 0,
+    "mean_s": null,
+    "median_s": null,
+    "p90_s": null,
+    "max_s": null
+  },
+  "n_cue_stops_censored": 0,
+  "n_cues_ended_before_event_end": 0,
+  "exposure": {
+    "total_s": 3058.3750000000005,
+    "valid_s": 2070.03,
+    "fog_s": 0.0,
+    "nonfog_s": 2070.03,
+    "n_windows": 8266.0,
+    "n_windows_excluded_invalid": 3960.0
+  },
+  "window_endpoint": {
+    "n": 8266,
+    "n_pos": 0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "tp": 0,
+    "fp": 0,
+    "fn": 0,
+    "pr_auc": null
+  },
+  "window_any": {
+    "n": 8266,
+    "n_pos": 0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "tp": 0,
+    "fp": 0,
+    "fn": 0,
+    "pr_auc": null
+  },
+  "per_run": [
+    {
+      "n_events": 0,
+      "n_detected": 0,
+      "n_cued_during_event": 0,
+      "detected_within": {
+        "0.5s": 0,
+        "1.0s": 0,
+        "2.0s": 0
+      },
+      "detection_delay": {
+        "n": 0,
+        "mean_s": null,
+        "median_s": null,
+        "p90_s": null,
+        "max_s": null
+      },
+      "detection_delay_raw_s": [],
+      "n_cue_starts": 0,
+      "n_false_cue_starts": 0,
+      "repeated_cue_onsets": 0,
+      "cue_stop_delay": {
+        "n": 0,
+        "mean_s": null,
+        "median_s": null,
+        "p90_s": null,
+        "max_s": null
+      },
+      "cue_stop_delay_raw_s": [],
+      "n_cue_stops_censored": 0,
+      "n_cues_ended_before_event_end": 0,
+      "unnecessary_cue_ms": 0.0,
+      "nonfog_hours": 0.5750083333333333,
+      "window_endpoint": {
+        "n": 8266,
+        "n_pos": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "pr_auc": null
+      },
+      "window_any": {
+        "n": 8266,
+        "n_pos": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "pr_auc": null
+      },
+      "exposure": {
+        "total_s": 3058.3750000000005,
+        "valid_s": 2070.03,
+        "fog_s": 0.0,
+        "nonfog_s": 2070.03,
+        "n_windows": 8266,
+        "n_windows_excluded_invalid": 3960
+      },
+      "cues": [],
+      "subject": 4,
+      "run": 1,
+      "events": []
+    }
+  ],
+  "subject": 4,
+  "candidate": "cnn_fi",
+  "recipe": {
+    "w_cnn": 0.6,
+    "w_fi": 0.4,
+    "threshold": 0.95,
+    "hysteresis": 0.15,
+    "fp_budget_per_hour": 1.5,
+    "budget_met": false,
+    "selected_by": "max pooled event sensitivity s.t. false-cue budget (inner OOF)"
+  },
+  "jitter_tol_0.3s": {
+    "event_sensitivity": null,
+    "n_detected": 0,
+    "n_events": 0,
+    "false_cue_starts_per_nonfog_hour": 0.0,
+    "n_false_cue_starts": 0,
+    "detection_delay": {
+      "n": 0,
+      "mean_s": null,
+      "median_s": null,
+      "p90_s": null,
+      "max_s": null
+    }
+  },
+  "protocol": {
+    "window_s": 2.0,
+    "train_hop_s": 0.5,
+    "eval_hop_s": 0.25,
+    "hysteresis": 0.15,
+    "threshold_grid": [
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ],
+    "weight_grid": [
+      [
+        0.5,
+        0.5
+      ],
+      [
+        0.6,
+        0.4
+      ]
+    ],
+    "fp_budget_per_hour": 1.5,
+    "epochs": 15,
+    "batch": 64,
+    "seed": 42,
+    "label": "any-freeze-in-window (current recipe)"
+  },
+  "elapsed_s": 275.7
+}

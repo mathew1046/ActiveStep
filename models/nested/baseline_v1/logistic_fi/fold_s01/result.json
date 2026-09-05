@@ -1,0 +1,806 @@
+{
+  "n_runs": 2,
+  "n_events": 23,
+  "n_detected": 11,
+  "event_sensitivity": 0.4782608695652174,
+  "detected_within": {
+    "0.5s": 2,
+    "1.0s": 5,
+    "2.0s": 8
+  },
+  "detection_delay": {
+    "n": 11,
+    "mean_s": 1.7952727272727271,
+    "median_s": 1.474,
+    "p90_s": 3.224,
+    "max_s": 7.287
+  },
+  "n_false_cue_starts": 60,
+  "nonfog_hours": 0.4987361111111112,
+  "false_cue_starts_per_nonfog_hour": 120.30410203570133,
+  "unnecessary_cue_min_per_nonfog_hour": 3.614837505917736,
+  "n_cue_starts": 71,
+  "repeated_cue_onsets": 3,
+  "n_cued_during_event": 14,
+  "cue_stop_delay": {
+    "n": 8,
+    "mean_s": 1.192625,
+    "median_s": 0.841,
+    "p90_s": 2.7615000000000003,
+    "max_s": 2.849
+  },
+  "n_cue_stops_censored": 0,
+  "n_cues_ended_before_event_end": 3,
+  "exposure": {
+    "total_s": 3188.750000000001,
+    "valid_s": 1900.0450000000005,
+    "fog_s": 104.59500000000003,
+    "nonfog_s": 1795.4500000000003,
+    "n_windows": 7579.0,
+    "n_windows_excluded_invalid": 5161.0
+  },
+  "window_endpoint": {
+    "n": 7579,
+    "n_pos": 417,
+    "precision": 0.43719806763285024,
+    "recall": 0.434052757793765,
+    "f1": 0.4356197352587244,
+    "tp": 181,
+    "fp": 233,
+    "fn": 236,
+    "pr_auc": null
+  },
+  "window_any": {
+    "n": 7579,
+    "n_pos": 600,
+    "precision": 0.5144927536231884,
+    "recall": 0.355,
+    "f1": 0.4201183431952662,
+    "tp": 213,
+    "fp": 201,
+    "fn": 387,
+    "pr_auc": null
+  },
+  "per_run": [
+    {
+      "n_events": 18,
+      "n_detected": 8,
+      "n_cued_during_event": 9,
+      "detected_within": {
+        "0.5s": 2,
+        "1.0s": 5,
+        "2.0s": 6
+      },
+      "detection_delay": {
+        "n": 8,
+        "mean_s": 1.6735,
+        "median_s": 0.6855,
+        "p90_s": 3.764599999999999,
+        "max_s": 7.287
+      },
+      "detection_delay_raw_s": [
+        0.537,
+        0.584,
+        0.787,
+        2.255,
+        0.099,
+        1.474,
+        7.287,
+        0.365
+      ],
+      "n_cue_starts": 59,
+      "n_false_cue_starts": 51,
+      "repeated_cue_onsets": 3,
+      "cue_stop_delay": {
+        "n": 5,
+        "mean_s": 1.0270000000000001,
+        "median_s": 0.443,
+        "p90_s": 2.249,
+        "max_s": 2.849
+      },
+      "cue_stop_delay_raw_s": [
+        2.849,
+        0.161,
+        0.443,
+        1.349,
+        0.333
+      ],
+      "n_cue_stops_censored": 0,
+      "n_cues_ended_before_event_end": 3,
+      "unnecessary_cue_ms": 91744.0,
+      "nonfog_hours": 0.38044638888888893,
+      "window_endpoint": {
+        "n": 5786,
+        "n_pos": 321,
+        "precision": 0.3860759493670886,
+        "recall": 0.38006230529595014,
+        "f1": 0.38304552590266877,
+        "tp": 122,
+        "fp": 194,
+        "fn": 199,
+        "pr_auc": 0.3119658281161757
+      },
+      "window_any": {
+        "n": 5786,
+        "n_pos": 464,
+        "precision": 0.43354430379746833,
+        "recall": 0.2952586206896552,
+        "f1": 0.3512820512820513,
+        "tp": 137,
+        "fp": 179,
+        "fn": 327,
+        "pr_auc": 0.3086339359768255
+      },
+      "exposure": {
+        "total_s": 2374.7810000000004,
+        "valid_s": 1450.0300000000002,
+        "fog_s": 80.42300000000002,
+        "nonfog_s": 1369.6070000000002,
+        "n_windows": 5786,
+        "n_windows_excluded_invalid": 3706
+      },
+      "cues": [
+        {
+          "start_ms": 946755,
+          "stop_ms": 947505,
+          "censored": false
+        },
+        {
+          "start_ms": 1045755,
+          "stop_ms": 1046755,
+          "censored": false
+        },
+        {
+          "start_ms": 1118005,
+          "stop_ms": 1119255,
+          "censored": false
+        },
+        {
+          "start_ms": 1120755,
+          "stop_ms": 1121755,
+          "censored": false
+        },
+        {
+          "start_ms": 1171005,
+          "stop_ms": 1171755,
+          "censored": false
+        },
+        {
+          "start_ms": 1208505,
+          "stop_ms": 1213505,
+          "censored": false
+        },
+        {
+          "start_ms": 1236755,
+          "stop_ms": 1246005,
+          "censored": false
+        },
+        {
+          "start_ms": 1282255,
+          "stop_ms": 1283755,
+          "censored": false
+        },
+        {
+          "start_ms": 1310755,
+          "stop_ms": 1311505,
+          "censored": false
+        },
+        {
+          "start_ms": 1316255,
+          "stop_ms": 1317255,
+          "censored": false
+        },
+        {
+          "start_ms": 1327505,
+          "stop_ms": 1328255,
+          "censored": false
+        },
+        {
+          "start_ms": 1368755,
+          "stop_ms": 1369755,
+          "censored": false
+        },
+        {
+          "start_ms": 1386505,
+          "stop_ms": 1387505,
+          "censored": false
+        },
+        {
+          "start_ms": 1425755,
+          "stop_ms": 1426255,
+          "censored": false
+        },
+        {
+          "start_ms": 1427255,
+          "stop_ms": 1428005,
+          "censored": false
+        },
+        {
+          "start_ms": 1438755,
+          "stop_ms": 1440255,
+          "censored": false
+        },
+        {
+          "start_ms": 1672505,
+          "stop_ms": 1675505,
+          "censored": false
+        },
+        {
+          "start_ms": 1695005,
+          "stop_ms": 1696255,
+          "censored": false
+        },
+        {
+          "start_ms": 1719505,
+          "stop_ms": 1719755,
+          "censored": false
+        },
+        {
+          "start_ms": 1723505,
+          "stop_ms": 1730255,
+          "censored": false
+        },
+        {
+          "start_ms": 1840255,
+          "stop_ms": 1841755,
+          "censored": false
+        },
+        {
+          "start_ms": 1845255,
+          "stop_ms": 1851005,
+          "censored": false
+        },
+        {
+          "start_ms": 1854505,
+          "stop_ms": 1859005,
+          "censored": false
+        },
+        {
+          "start_ms": 1863755,
+          "stop_ms": 1867255,
+          "censored": false
+        },
+        {
+          "start_ms": 1877505,
+          "stop_ms": 1878505,
+          "censored": false
+        },
+        {
+          "start_ms": 1897505,
+          "stop_ms": 1901005,
+          "censored": false
+        },
+        {
+          "start_ms": 1902505,
+          "stop_ms": 1906255,
+          "censored": false
+        },
+        {
+          "start_ms": 1907255,
+          "stop_ms": 1913755,
+          "censored": false
+        },
+        {
+          "start_ms": 1925005,
+          "stop_ms": 1930255,
+          "censored": false
+        },
+        {
+          "start_ms": 1931005,
+          "stop_ms": 1931755,
+          "censored": false
+        },
+        {
+          "start_ms": 1938255,
+          "stop_ms": 1938755,
+          "censored": false
+        },
+        {
+          "start_ms": 1944505,
+          "stop_ms": 1949255,
+          "censored": false
+        },
+        {
+          "start_ms": 1951005,
+          "stop_ms": 1966755,
+          "censored": false
+        },
+        {
+          "start_ms": 1977255,
+          "stop_ms": 1978505,
+          "censored": false
+        },
+        {
+          "start_ms": 1991255,
+          "stop_ms": 1992505,
+          "censored": false
+        },
+        {
+          "start_ms": 1994505,
+          "stop_ms": 1995755,
+          "censored": false
+        },
+        {
+          "start_ms": 2003255,
+          "stop_ms": 2005005,
+          "censored": false
+        },
+        {
+          "start_ms": 2013755,
+          "stop_ms": 2021755,
+          "censored": false
+        },
+        {
+          "start_ms": 2040755,
+          "stop_ms": 2042005,
+          "censored": false
+        },
+        {
+          "start_ms": 2054005,
+          "stop_ms": 2055255,
+          "censored": false
+        },
+        {
+          "start_ms": 2057255,
+          "stop_ms": 2058255,
+          "censored": false
+        },
+        {
+          "start_ms": 2077505,
+          "stop_ms": 2078505,
+          "censored": false
+        },
+        {
+          "start_ms": 2079505,
+          "stop_ms": 2080005,
+          "censored": false
+        },
+        {
+          "start_ms": 2094255,
+          "stop_ms": 2095505,
+          "censored": false
+        },
+        {
+          "start_ms": 2117005,
+          "stop_ms": 2118005,
+          "censored": false
+        },
+        {
+          "start_ms": 2120005,
+          "stop_ms": 2125505,
+          "censored": false
+        },
+        {
+          "start_ms": 2135255,
+          "stop_ms": 2136505,
+          "censored": false
+        },
+        {
+          "start_ms": 2137005,
+          "stop_ms": 2138255,
+          "censored": false
+        },
+        {
+          "start_ms": 2148505,
+          "stop_ms": 2150005,
+          "censored": false
+        },
+        {
+          "start_ms": 2150755,
+          "stop_ms": 2151755,
+          "censored": false
+        },
+        {
+          "start_ms": 2159005,
+          "stop_ms": 2159755,
+          "censored": false
+        },
+        {
+          "start_ms": 2161005,
+          "stop_ms": 2162255,
+          "censored": false
+        },
+        {
+          "start_ms": 2185005,
+          "stop_ms": 2186755,
+          "censored": false
+        },
+        {
+          "start_ms": 2193255,
+          "stop_ms": 2194505,
+          "censored": false
+        },
+        {
+          "start_ms": 2197255,
+          "stop_ms": 2199255,
+          "censored": false
+        },
+        {
+          "start_ms": 2239505,
+          "stop_ms": 2240255,
+          "censored": false
+        },
+        {
+          "start_ms": 2241255,
+          "stop_ms": 2242005,
+          "censored": false
+        },
+        {
+          "start_ms": 2243755,
+          "stop_ms": 2244755,
+          "censored": false
+        },
+        {
+          "start_ms": 2246005,
+          "stop_ms": 2247005,
+          "censored": false
+        }
+      ],
+      "subject": 1,
+      "run": 1,
+      "events": [
+        {
+          "onset_ms": 1139765,
+          "end_ms": 1140828,
+          "duration_s": 1.063,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1154765,
+          "end_ms": 1155781,
+          "duration_s": 1.016,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1207968,
+          "end_ms": 1210656,
+          "duration_s": 2.688,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1236171,
+          "end_ms": 1245844,
+          "duration_s": 9.673,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1368765,
+          "end_ms": 1371797,
+          "duration_s": 3.032,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1380187,
+          "end_ms": 1380719,
+          "duration_s": 0.532,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1668843,
+          "end_ms": 1670828,
+          "duration_s": 1.985,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1689765,
+          "end_ms": 1690719,
+          "duration_s": 0.954,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1722718,
+          "end_ms": 1729812,
+          "duration_s": 7.094,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1843000,
+          "end_ms": 1856906,
+          "duration_s": 13.906,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1863656,
+          "end_ms": 1865906,
+          "duration_s": 2.25,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1875640,
+          "end_ms": 1877172,
+          "duration_s": 1.532,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1890687,
+          "end_ms": 1892000,
+          "duration_s": 1.313,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1901031,
+          "end_ms": 1914687,
+          "duration_s": 13.656,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 1917718,
+          "end_ms": 1932922,
+          "duration_s": 15.204,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 2136640,
+          "end_ms": 2137922,
+          "duration_s": 1.282,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 2142125,
+          "end_ms": 2144125,
+          "duration_s": 2.0,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 2171515,
+          "end_ms": 2172766,
+          "duration_s": 1.251,
+          "start_censored": false,
+          "end_censored": false
+        }
+      ]
+    },
+    {
+      "n_events": 5,
+      "n_detected": 3,
+      "n_cued_during_event": 5,
+      "detected_within": {
+        "0.5s": 0,
+        "1.0s": 0,
+        "2.0s": 2
+      },
+      "detection_delay": {
+        "n": 3,
+        "mean_s": 2.12,
+        "median_s": 1.662,
+        "p90_s": 2.9116,
+        "max_s": 3.224
+      },
+      "detection_delay_raw_s": [
+        1.474,
+        3.224,
+        1.662
+      ],
+      "n_cue_starts": 12,
+      "n_false_cue_starts": 9,
+      "repeated_cue_onsets": 0,
+      "cue_stop_delay": {
+        "n": 3,
+        "mean_s": 1.4686666666666668,
+        "median_s": 0.88,
+        "p90_s": 2.3552000000000004,
+        "max_s": 2.724
+      },
+      "cue_stop_delay_raw_s": [
+        2.724,
+        0.802,
+        0.88
+      ],
+      "n_cue_stops_censored": 0,
+      "n_cues_ended_before_event_end": 0,
+      "unnecessary_cue_ms": 16427.0,
+      "nonfog_hours": 0.11828972222222227,
+      "window_endpoint": {
+        "n": 1793,
+        "n_pos": 96,
+        "precision": 0.6020408163265306,
+        "recall": 0.6145833333333334,
+        "f1": 0.6082474226804124,
+        "tp": 59,
+        "fp": 39,
+        "fn": 37,
+        "pr_auc": 0.5190504406550673
+      },
+      "window_any": {
+        "n": 1793,
+        "n_pos": 136,
+        "precision": 0.7755102040816326,
+        "recall": 0.5588235294117647,
+        "f1": 0.6495726495726496,
+        "tp": 76,
+        "fp": 22,
+        "fn": 60,
+        "pr_auc": 0.6847168906318912
+      },
+      "exposure": {
+        "total_s": 813.9690000000003,
+        "valid_s": 450.0150000000002,
+        "fog_s": 24.172000000000008,
+        "nonfog_s": 425.8430000000002,
+        "n_windows": 1793,
+        "n_windows_excluded_invalid": 1455
+      },
+      "cues": [
+        {
+          "start_ms": 479755,
+          "stop_ms": 485005,
+          "censored": false
+        },
+        {
+          "start_ms": 490505,
+          "stop_ms": 491005,
+          "censored": false
+        },
+        {
+          "start_ms": 492255,
+          "stop_ms": 493505,
+          "censored": false
+        },
+        {
+          "start_ms": 534505,
+          "stop_ms": 538005,
+          "censored": false
+        },
+        {
+          "start_ms": 539005,
+          "stop_ms": 541255,
+          "censored": false
+        },
+        {
+          "start_ms": 542755,
+          "stop_ms": 549255,
+          "censored": false
+        },
+        {
+          "start_ms": 573755,
+          "stop_ms": 576255,
+          "censored": false
+        },
+        {
+          "start_ms": 577255,
+          "stop_ms": 579505,
+          "censored": false
+        },
+        {
+          "start_ms": 580755,
+          "stop_ms": 583755,
+          "censored": false
+        },
+        {
+          "start_ms": 584255,
+          "stop_ms": 586005,
+          "censored": false
+        },
+        {
+          "start_ms": 588255,
+          "stop_ms": 588755,
+          "censored": false
+        },
+        {
+          "start_ms": 593005,
+          "stop_ms": 598505,
+          "censored": false
+        }
+      ],
+      "subject": 1,
+      "run": 2,
+      "events": [
+        {
+          "onset_ms": 478281,
+          "end_ms": 482281,
+          "duration_s": 4.0,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 535531,
+          "end_ms": 537281,
+          "duration_s": 1.75,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 539531,
+          "end_ms": 548453,
+          "duration_s": 8.922,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 577500,
+          "end_ms": 580719,
+          "duration_s": 3.219,
+          "start_censored": false,
+          "end_censored": false
+        },
+        {
+          "onset_ms": 591343,
+          "end_ms": 597625,
+          "duration_s": 6.282,
+          "start_censored": false,
+          "end_censored": false
+        }
+      ]
+    }
+  ],
+  "subject": 1,
+  "candidate": "logistic_fi",
+  "recipe": {
+    "w_cnn": 0.6,
+    "w_fi": 0.4,
+    "threshold": 0.95,
+    "hysteresis": 0.15,
+    "fp_budget_per_hour": 1.5,
+    "budget_met": false,
+    "selected_by": "max pooled event sensitivity s.t. false-cue budget (inner OOF)"
+  },
+  "jitter_tol_0.3s": {
+    "event_sensitivity": 0.5652173913043478,
+    "n_detected": 13,
+    "n_events": 23,
+    "false_cue_starts_per_nonfog_hour": 116.29396530117795,
+    "n_false_cue_starts": 58,
+    "detection_delay": {
+      "n": 13,
+      "mean_s": 1.4994615384615384,
+      "median_s": 0.787,
+      "p90_s": 3.0302000000000007,
+      "max_s": 7.287
+    }
+  },
+  "protocol": {
+    "window_s": 2.0,
+    "train_hop_s": 0.5,
+    "eval_hop_s": 0.25,
+    "hysteresis": 0.15,
+    "threshold_grid": [
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ],
+    "weight_grid": [
+      [
+        0.5,
+        0.5
+      ],
+      [
+        0.6,
+        0.4
+      ]
+    ],
+    "fp_budget_per_hour": 1.5,
+    "epochs": 15,
+    "batch": 64,
+    "seed": 42,
+    "label": "any-freeze-in-window (current recipe)"
+  },
+  "elapsed_s": 102.2
+}

@@ -1,0 +1,9 @@
+{
+  "w_cnn": 0.6,
+  "w_fi": 0.4,
+  "threshold": 0.95,
+  "hysteresis": 0.15,
+  "fp_budget_per_hour": 1.5,
+  "budget_met": false,
+  "selected_by": "max pooled event sensitivity s.t. false-cue budget (inner OOF)"
+}

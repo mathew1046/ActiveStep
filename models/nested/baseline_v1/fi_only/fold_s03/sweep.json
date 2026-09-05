@@ -1,0 +1,142 @@
+[
+  {
+    "w_cnn": 0.0,
+    "w_fi": 1.0,
+    "threshold": 0.3,
+    "event_sensitivity": 0.20212765957446807,
+    "false_cue_starts_per_nonfog_hour": 220.4438422443187,
+    "mean_detection_delay_s": 3.329421052631579,
+    "n_events": 188,
+    "feasible": false
+  },
+  {
+    "w_cnn": 0.0,
+    "w_fi": 1.0,
+    "threshold": 0.35,
+    "event_sensitivity": 0.30319148936170215,
+    "false_cue_starts_per_nonfog_hour": 308.1203704096727,
+    "mean_detection_delay_s": 2.701140350877193,
+    "n_events": 188,
+    "feasible": false
+  },
+  {
+    "w_cnn": 0.0,
+    "w_fi": 1.0,
+    "threshold": 0.4,
+    "event_sensitivity": 0.425531914893617,
+    "false_cue_starts_per_nonfog_hour": 373.7525143505949,
+    "mean_detection_delay_s": 2.7153750000000003,
+    "n_events": 188,
+    "feasible": false
+  },
+  {
+    "w_cnn": 0.0,
+    "w_fi": 1.0,
+    "threshold": 0.45,
+    "event_sensitivity": 0.5106382978723404,
+    "false_cue_starts_per_nonfog_hour": 438.13213646058335,
+    "mean_detection_delay_s": 2.0242916666666666,
+    "n_events": 188,
+    "feasible": false
+  },
+  {
+    "w_cnn": 0.0,
+    "w_fi": 1.0,
+    "threshold": 0.5,
+    "event_sensitivity": 0.574468085106383,
+    "false_cue_starts_per_nonfog_hour": 476.96031321952586,
+    "mean_detection_delay_s": 1.679462962962963,
+    "n_events": 188,
+    "feasible": false
+  },
+  {
+    "w_cnn": 0.0,
+    "w_fi": 1.0,
+    "threshold": 0.55,
+    "event_sensitivity": 0.6329787234042553,
+    "false_cue_starts_per_nonfog_hour": 504.0147847676923,
+    "mean_detection_delay_s": 1.399201680672269,
+    "n_events": 188,
+    "feasible": false
+  },
+  {
+    "w_cnn": 0.0,
+    "w_fi": 1.0,
+    "threshold": 0.6,
+    "event_sensitivity": 0.6648936170212766,
+    "false_cue_starts_per_nonfog_hour": 514.5359681475347,
+    "mean_detection_delay_s": 1.497672,
+    "n_events": 188,
+    "feasible": false
+  },
+  {
+    "w_cnn": 0.0,
+    "w_fi": 1.0,
+    "threshold": 0.65,
+    "event_sensitivity": 0.6914893617021277,
+    "false_cue_starts_per_nonfog_hour": 512.2814288518542,
+    "mean_detection_delay_s": 1.650376923076923,
+    "n_events": 188,
+    "feasible": false
+  },
+  {
+    "w_cnn": 0.0,
+    "w_fi": 1.0,
+    "threshold": 0.7,
+    "event_sensitivity": 0.7180851063829787,
+    "false_cue_starts_per_nonfog_hour": 499.00469744395775,
+    "mean_detection_delay_s": 1.7607407407407407,
+    "n_events": 188,
+    "feasible": false
+  },
+  {
+    "w_cnn": 0.0,
+    "w_fi": 1.0,
+    "threshold": 0.75,
+    "event_sensitivity": 0.7340425531914894,
+    "false_cue_starts_per_nonfog_hour": 480.46737434614005,
+    "mean_detection_delay_s": 1.6651739130434782,
+    "n_events": 188,
+    "feasible": false
+  },
+  {
+    "w_cnn": 0.0,
+    "w_fi": 1.0,
+    "threshold": 0.8,
+    "event_sensitivity": 0.75,
+    "false_cue_starts_per_nonfog_hour": 451.6593722346666,
+    "mean_detection_delay_s": 1.5437588652482268,
+    "n_events": 188,
+    "feasible": false
+  },
+  {
+    "w_cnn": 0.0,
+    "w_fi": 1.0,
+    "threshold": 0.85,
+    "event_sensitivity": 0.723404255319149,
+    "false_cue_starts_per_nonfog_hour": 425.10590941887364,
+    "mean_detection_delay_s": 1.582161764705882,
+    "n_events": 188,
+    "feasible": false
+  },
+  {
+    "w_cnn": 0.0,
+    "w_fi": 1.0,
+    "threshold": 0.9,
+    "event_sensitivity": 0.723404255319149,
+    "false_cue_starts_per_nonfog_hour": 397.5504291383338,
+    "mean_detection_delay_s": 1.7030220588235294,
+    "n_events": 188,
+    "feasible": false
+  },
+  {
+    "w_cnn": 0.0,
+    "w_fi": 1.0,
+    "threshold": 0.95,
+    "event_sensitivity": 0.7127659574468085,
+    "false_cue_starts_per_nonfog_hour": 368.4919226606736,
+    "mean_detection_delay_s": 1.8027537313432838,
+    "n_events": 188,
+    "feasible": false
+  }
+]
