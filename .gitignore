@@ -18,6 +18,7 @@ models/*.json
 data/
 checkpoints/
 activestep.db
+.cache/
 
 # OS
 .DS_Store

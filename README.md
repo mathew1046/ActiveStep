@@ -99,13 +99,54 @@ Environment overrides:
 python -m pytest tests/ -q
 ```
 
+## Model assessment pipeline (use this for any reported numbers)
+
+`scripts/run_assessment.sh` runs the leakage-free nested assessment
+(the old `run_training.sh` path is superseded — see note below):
+
+```bash
+bash scripts/run_assessment.sh audit    # dataset inventory -> models/dataset_audit.json
+bash scripts/run_assessment.sh cache    # window cache -> .cache/windows
+bash scripts/run_assessment.sh smoke    # 1-epoch mechanics check on subjects 1-3
+bash scripts/run_assessment.sh full     # full nested LOPO assessment (all subjects)
+bash scripts/run_assessment.sh report   # markdown report from summary.json
+```
+
+What it does (see `plan.md` and module docstrings for the full protocol):
+
+- **Corrected data pipeline** (`src/data.py`): annotations are never
+  interpolated; recordings are windowed independently; windows never cross
+  run boundaries or non-experimental segments; every window carries
+  provenance (subject, run, decision time, labels).
+- **Nested leave-one-participant-out** (`src/train_nested.py`): the recipe
+  (combine weights + cue threshold) is selected on inner participant-grouped
+  out-of-fold streams, the model is refit on all outer-train participants,
+  and evaluated exactly once on the held-out participant.
+- **Streaming benchmark** (`src/benchmark.py`): event sensitivity,
+  false cues per non-FOG hour, onset-to-cue and cue-stop delays,
+  unnecessary cue time, window metrics, bootstrap CIs, and a 0.3 s
+  annotation-jitter sensitivity — all through the same cue FSM the device
+  runtime uses (`src/detector.py`).
+- **Candidates**: `fi_only` (Freeze Index baseline), `logistic_fi`
+  (feature baseline), `cnn_fi` (current CNN + FI).
+
+Outputs land in `models/nested/<tag>/` (per-fold recipes, sweeps,
+predictions, results, `summary.json`) and `assessment_report.md`.
+
+**Claim scope:** results are patient-independent, retrospective, offline
+detection results on Daphnet. They do not establish real-world wearable
+accuracy, cueing effectiveness, or clinical benefit.
+
 ## Model notes
 
-- Input: 2 s @ 100 Hz, 3-axis shank acceleration, z-scored
+- Input: 2 s @ 100 Hz, 3-axis shank acceleration (mg), z-scored
 - Architecture: Conv1D(16) → Conv1D(32) → GAP → Dense(16) → Sigmoid
 - Training data: Daphnet (10 subjects, resampled to 100 Hz)
-- S01 held-out: P≈0.62, R≈0.58, F1≈0.60, event-level recall ≈86%
 - The **float32 TFLite** is the recommended artifact; the int8 variant is smaller but degrades the small model.
+- The historical S01 fold metrics in `models/fold_s01/` predate the
+  corrected data pipeline and an audit showed its window set was inconsistent
+  with the raw recordings; do not cite them. Use the nested assessment
+  (`bash scripts/run_assessment.sh full`) for any reported numbers.
 
 ## Project structure
 

@@ -10,6 +10,11 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 
+try:
+    from src.features import p_fog_combined  # noqa: F401  (re-exported for compatibility)
+except ImportError:  # imported as a top-level module (e.g. `python src/train.py`)
+    from features import p_fog_combined  # noqa: F401
+
 
 def build_fog_cnn(
     window_length: int,
@@ -44,24 +49,6 @@ def build_fog_cnn(
         metrics=["accuracy"],
     )
     return model
-
-
-def p_fog_combined(
-    p_cnn: np.ndarray,
-    fi: np.ndarray,
-    w_cnn: float = 0.6,
-    w_fi: float = 0.4,
-    fi_threshold: float = 2.0,
-    cnn_threshold: float = 0.5,
-) -> np.ndarray:
-    """Combine the CNN's pFOG with the Freeze Index.
-
-    Both scores are calibrated into [0, 1] before weighting so the final score
-    is explainable and does not collapse when one source is noisy.
-    """
-    fi_score = np.clip((fi - fi_threshold) / (fi_threshold * 2.0 + 1e-8) + 0.5, 0, 1)
-    cnn_score = np.clip(p_cnn / (cnn_threshold * 2.0 + 1e-8), 0, 1)
-    return w_cnn * cnn_score + w_fi * fi_score
 
 
 class StandardScaler:

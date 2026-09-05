@@ -5,6 +5,9 @@ It can run on a Raspberry Pi, a laptop for simulation, or be ported to the
 UNO Q Linux side in a pinch. For the ESP32 the C++ firmware in
 firmware/esp32/ is the real implementation; this Python runner is the
 software reference that the C++ firmware follows.
+
+Scoring and cue-state logic live in src/detector.py (shared with the offline
+benchmark) so the runtime and the assessment pipeline cannot drift apart.
 """
 
 from __future__ import annotations
@@ -20,10 +23,8 @@ import tensorflow as tf
 
 from activestep.config import (
     AUDIO,
+    DEFAULT_PFOG_THRESHOLD,
     LASER,
-    METRONOME_BPM_MAX,
-    METRONOME_BPM_MIN,
-    METRONOME_RATIO,
     SAMPLE_RATE,
     UNOQ_IP,
     UNOQ_UDP_PORT,
@@ -32,8 +33,24 @@ from activestep.config import (
 )
 from activestep.hardware import get_backend
 from activestep.hardware.base import CueState, HardwareBackend
-from src.features import compute_freeze_index
-from src.model import StandardScaler, p_fog_combined
+from src.detector import DetectorConfig, StreamDetector
+from src.model import StandardScaler
+
+
+def _make_predict_fn(interpreter: tf.lite.Interpreter):
+    """Wrap a TFLite interpreter as (N, W, 3) -> (N,) probabilities."""
+    in_d = interpreter.get_input_details()[0]
+    out_d = interpreter.get_output_details()[0]
+
+    def fn(X: np.ndarray) -> np.ndarray:
+        out = np.empty(len(X), dtype=np.float32)
+        for i in range(len(X)):
+            interpreter.set_tensor(in_d["index"], X[i : i + 1].astype(in_d["dtype"]))
+            interpreter.invoke()
+            out[i] = float(np.asarray(interpreter.get_tensor(out_d["index"])).ravel()[0])
+        return out
+
+    return fn
 
 
 class Runtime:
@@ -51,45 +68,31 @@ class Runtime:
             model_path=str(tflite_path or Path("models/final/model_quantized.tflite"))
         )
         self._interpreter.allocate_tensors()
-        self._in_d = self._interpreter.get_input_details()[0]
-        self._out_d = self._interpreter.get_output_details()[0]
 
-        self._ring: deque[np.ndarray] = deque(maxlen=WINDOW_SAMPLES)
-        self._window = np.zeros((WINDOW_SAMPLES, 3), dtype=np.float32)
-        self._idx = 0
-        self._sample_count = 0
-        self._threshold = 0.7
-        self._threshold_offset = 0.0
+        self.detector = StreamDetector(
+            DetectorConfig(
+                window_samples=WINDOW_SAMPLES,
+                hop_samples=int(SAMPLE_RATE * 0.25),
+                threshold=DEFAULT_PFOG_THRESHOLD,
+                hysteresis=0.15,
+            ),
+            predict_fn=_make_predict_fn(self._interpreter),
+            scaler=self._scaler,
+        )
+
         self._modality = VIBRATION | LASER | AUDIO
-        self._cueing = False
-        self._cue_start = 0.0
         self._label_window_end = 0.0
+        self._recent_imu: deque[np.ndarray] = deque(maxlen=20)
+        self._last_fi = 0.0
+        self._last_score = 0.0
 
         self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self._seq = 0
 
-    def _sample(self):
-        sample = self.backend.imu.read()
-        self._ring.append(sample[:3].astype(np.float32))
-        self._sample_count += 1
-
-    def _inference(self) -> tuple[float, float]:
-        if len(self._ring) < WINDOW_SAMPLES:
-            return 0.0, 0.0
-        win = np.stack(self._ring, axis=0)
-        win_n = self._scaler.transform(win)
-        self._interpreter.set_tensor(
-            self._in_d["index"], win_n[None].astype(self._in_d["dtype"])
-        )
-        self._interpreter.invoke()
-        p_cnn = float(self._interpreter.get_tensor(self._out_d["index"])[0, 0])
-        fi = compute_freeze_index(win_n[None, ...], fs=SAMPLE_RATE)[0]
-        return p_fog_combined(p_cnn, fi), fi
-
     def _send(self, fi: float, pfog: float, state: str, event: dict | None = None):
         self._seq += 1
         t = int(time.monotonic() * 1000)
-        imu = np.stack(list(self._ring)[-20:], axis=0).tolist() if len(self._ring) >= 20 else []
+        imu = [s.tolist() for s in self._recent_imu]
         msg = {
             "seq": self._seq,
             "t_ms": t,
@@ -111,83 +114,77 @@ class Runtime:
             data, _ = self._sock.recvfrom(512)
             cmd = json.loads(data.decode())
             if "threshold_offset" in cmd:
-                self._threshold_offset = float(cmd["threshold_offset"])
+                self.detector.set_threshold_offset(float(cmd["threshold_offset"]))
             if "modality_mask" in cmd:
                 self._modality = int(cmd["modality_mask"])
             if "tempo_bpm" in cmd:
-                pass  # vibrate in sync if needed
+                pass  # haptic metronome sync: not yet implemented
         except (BlockingIOError, json.JSONDecodeError):
             pass
 
-    def _handle_labels(self, fi: float, pfog: float, now: float):
+    def _handle_labels(self, now: float):
         if now > self._label_window_end:
             return
         sw = self.backend.switches.read()
-        if sw.get("true"):
-            self._send(fi, pfog, "IDLE", {"type": "label", "label": "TRUE"})
-            self._label_window_end = 0.0
-        if sw.get("false"):
-            self._send(fi, pfog, "IDLE", {"type": "label", "label": "FALSE"})
+        if sw.get("true") or sw.get("false"):
+            label = "TRUE" if sw.get("true") else "FALSE"
+            self._send(self._last_fi, self._last_score, "IDLE",
+                       {"type": "label", "label": label})
             self._label_window_end = 0.0
 
     def run(self):
         print("[runtime] starting loop")
-        hop = int(SAMPLE_RATE * 0.25)
-        next_infer = 0
-        self._sock.bind(("0.0.0.0", 5006))
         t0 = time.monotonic()
+        sample_count = 0
+        last_telem = 0.0
+        self._sock.bind(("0.0.0.0", 5006))
         while True:
-            self._sample()
+            sample = self.backend.imu.read()
+            self._recent_imu.append(np.asarray(sample, dtype=np.float32))
+            sample_count += 1
             self.backend.tick()
 
-            if self._sample_count - next_infer >= hop:
-                next_infer = self._sample_count
-                pfog, fi = self._inference()
-                thr = self._threshold + self._threshold_offset
-                now = time.monotonic()
-                state = "IDLE"
+            now = time.monotonic()
+            decision = self.detector.push(int(now * 1000), np.asarray(sample, dtype=np.float32)[:3])
 
-                if not self._cueing and pfog >= thr:
-                    self._cueing = True
-                    self._cue_start = now
-                    self.backend.cues.set(
-                        CueState(
-                            vibration=bool(self._modality & VIBRATION),
-                            laser=bool(self._modality & LASER),
-                            audio=bool(self._modality & AUDIO),
+            if decision is not None:
+                state = "CUEING" if decision.cueing else "IDLE"
+                self._last_fi = decision.fi
+                self._last_score = decision.score
+                for ev in decision.events:
+                    if ev.type == "cue_start":
+                        self.backend.cues.set(
+                            CueState(
+                                vibration=bool(self._modality & VIBRATION),
+                                laser=bool(self._modality & LASER),
+                                audio=bool(self._modality & AUDIO),
+                            )
                         )
-                    )
-                    self.backend.led.set(True)
-                    state = "CUEING"
-                    self._label_window_end = now + 10.0
-                    self._send(fi, pfog, "CUEING", {"type": "cue_start", "modality": self._modality})
+                        self.backend.led.set(True)
+                        self._label_window_end = now + 10.0
+                        self._send(decision.fi, decision.score, "CUEING",
+                                   {"type": "cue_start", "modality": self._modality})
+                    elif ev.type == "cue_stop":
+                        self.backend.cues.set(CueState())
+                        self.backend.led.set(False)
+                        self._send(decision.fi, decision.score, "IDLE",
+                                   {"type": "cue_stop", "recovery_ms": ev.recovery_ms})
 
-                elif self._cueing and pfog < thr - 0.15:
-                    recovery = int((now - self._cue_start) * 1000)
-                    self._cueing = False
-                    self.backend.cues.set(CueState())
-                    self.backend.led.set(False)
-                    state = "IDLE"
-                    self._send(fi, pfog, "IDLE", {"type": "cue_stop", "recovery_ms": recovery})
+                self._handle_labels(now)
 
-                elif self._cueing:
-                    state = "CUEING"
+                if now - last_telem >= 0.2:
+                    last_telem = now
+                    self._send(decision.fi, decision.score, state)
 
                 if getattr(self, "_verbose", False):
-                    print(f"[runtime] pfog={pfog:.3f} fi={fi:.2f} state={state}")
-
-                self._handle_labels(fi, pfog, now)
-
-                if self._sample_count % (SAMPLE_RATE // 5) == 0:
-                    self._send(fi, pfog, state)
+                    print(f"[runtime] pfog={decision.score:.3f} fi={decision.fi:.2f} state={state}")
 
                 self._check_commands()
 
-            # enforce ~100 Hz sampling
             if getattr(self, "_stop", False):
                 break
             elapsed = time.monotonic() - t0
-            target = self._sample_count / SAMPLE_RATE
+            target = sample_count / SAMPLE_RATE
             if elapsed < target:
                 time.sleep(target - elapsed)
 
