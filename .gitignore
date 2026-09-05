@@ -2,7 +2,6 @@
 __pycache__/
 *.py[cod]
 *.egg-info/
-.pytest_cache/
 
 # Conda / Python environments
 .env
@@ -13,21 +12,13 @@ models/*.tflite
 models/*.h5
 models/*.h
 models/*.json
-models/deployment/
-models/foggy/
 *.log
 
 # Data outputs
 data/
 checkpoints/
 activestep.db
-*.db
 .cache/
-
-# Generated archives / editor backups
-*.zip
-*.bak
-*.tmp
 
 # OS
 .DS_Store
