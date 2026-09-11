@@ -1,124 +1,33 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ActiveStep Dashboard</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    :root { --bg: #111; --panel: #1e1e1e; --text: #eee; --accent: #4caf50; }
-    * { box-sizing: border-box; }
-    body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; }
-    header { padding: 1rem 2rem; background: #000; border-bottom: 1px solid #333; }
-    h1 { margin: 0; font-size: 1.4rem; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; padding: 1.5rem; }
-    .card { background: var(--panel); border-radius: 10px; padding: 1rem; }
-    .big { font-size: 2.2rem; font-weight: bold; color: var(--accent); }
-    .label { color: #888; font-size: 0.85rem; text-transform: uppercase; }
-    .status { padding: 0.4rem 0.8rem; border-radius: 6px; display: inline-block; background: #333; }
-    .status.cueing { background: #d32f2f; color: #fff; }
-    #log { max-height: 220px; overflow-y: auto; font-family: monospace; font-size: 0.8rem; }
-    .row { padding: 0.3rem 0; border-bottom: 1px solid #333; }
-  </style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ActiveStep · Live Mobility</title>
+<style>
+:root{--bg:#f5f7fb;--panel:#fff;--ink:#14213d;--muted:#64748b;--line:#e2e8f0;--green:#0f9d72;--red:#dc3545;--blue:#2563eb;--amber:#d97706}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px Inter,ui-sans-serif,system-ui,-apple-system,sans-serif}header{background:#10233f;color:white;padding:22px clamp(18px,4vw,56px);display:flex;justify-content:space-between;align-items:center}h1{font-size:22px;margin:0;font-weight:700}header p{margin:5px 0 0;color:#b9c8db;font-size:13px}.pill{border:1px solid #41607f;border-radius:999px;padding:8px 12px;color:#cde6ff;font-size:12px}.wrap{max-width:1260px;margin:0 auto;padding:24px clamp(16px,4vw,56px)}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 2px 8px #10233f08}.label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}.value{font-size:30px;font-weight:750;margin-top:10px}.unit{font-size:12px;color:var(--muted);font-weight:500}.wide{grid-column:1/-1}.split{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.sensor-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.sensor{border:1px solid var(--line);border-radius:11px;padding:14px}.sensor h3{margin:0 0 12px;font-size:14px}.sensor p{margin:7px 0;color:var(--muted);font-size:13px}.sensor b{color:var(--ink);float:right}.status{display:inline-block;padding:6px 10px;border-radius:999px;background:#eef2f7;color:var(--muted);font-size:12px;font-weight:700}.status.live{background:#e4f8f0;color:var(--green)}.status.alert{background:#fff0f1;color:var(--red)}canvas{width:100%;height:220px;background:linear-gradient(#fff,#fbfdff);border-radius:8px}.log{height:160px;overflow:auto;font:12px ui-monospace,SFMono-Regular,Menlo,monospace;color:#475569}.row{padding:7px 0;border-bottom:1px solid var(--line)}@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:1fr}}@media(max-width:500px){.grid{grid-template-columns:1fr}.wide{grid-column:auto}}
+</style>
 </head>
 <body>
-  <header><h1>ActiveStep Dashboard</h1></header>
-  <div class="grid">
-    <div class="card">
-      <div class="label">pFOG</div>
-      <div class="big" id="pfog">--</div>
-    </div>
-    <div class="card">
-      <div class="label">Cadence (steps/min)</div>
-      <div class="big" id="cadence">--</div>
-    </div>
-    <div class="card">
-      <div class="label">Status</div>
-      <div class="status" id="status">standby</div>
-    </div>
-    <div class="card">
-      <div class="label">Last Cue / Modality</div>
-      <div class="big" id="cue" style="font-size:1.2rem; min-height:2.4rem;">--</div>
-    </div>
-    <div class="card" style="grid-column: 1 / -1;">
-      <canvas id="pfogChart" height="80"></canvas>
-    </div>
-    <div class="card">
-      <div class="label">Event log</div>
-      <div id="log"></div>
-    </div>
-    <div class="card">
-      <div class="label">Tier-2 context</div>
-      <pre id="tier2">waiting for data...</pre>
-    </div>
-  </div>
-
-  <script>
-    const ctx = document.getElementById('pfogChart').getContext('2d');
-    const chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: [],
-        datasets: [{
-          label: 'pFOG',
-          data: [],
-          borderColor: '#4caf50',
-          borderWidth: 1.5,
-          pointRadius: 0,
-          fill: false,
-          tension: 0.3
-        }]
-      },
-      options: {
-        animation: false,
-        scales: {
-          y: { min: 0, max: 1.0 },
-          x: { display: false }
-        },
-        plugins: { legend: { display: false } }
-      }
-    });
-
-    const ws = new WebSocket(`ws://${window.location.host}/ws/live`);
-    const maxPoints = 200;
-    const log = document.getElementById('log');
-
-    function addLog(msg) {
-      const row = document.createElement('div');
-      row.className = 'row';
-      row.textContent = `${new Date().toLocaleTimeString()}  ${msg}`;
-      log.prepend(row);
-      if (log.children.length > 50) log.lastChild.remove();
-    }
-
-    ws.onmessage = (ev) => {
-      const m = JSON.parse(ev.data);
-      if (m.pfog !== undefined) {
-        document.getElementById('pfog').textContent = m.pfog.toFixed(3);
-        chart.data.labels.push('');
-        chart.data.datasets[0].data.push(m.pfog);
-        if (chart.data.datasets[0].data.length > maxPoints) {
-          chart.data.labels.shift();
-          chart.data.datasets[0].data.shift();
-        }
-        chart.update();
-      }
-      if (m.cadence !== undefined) document.getElementById('cadence').textContent = m.cadence.toFixed(1);
-      if (m.status) {
-        const el = document.getElementById('status');
-        el.textContent = m.status;
-        el.className = 'status ' + (m.status === 'cueing' ? 'cueing' : '');
-      }
-      if (m.event) {
-        document.getElementById('cue').textContent = `${m.event.type} (${m.event.modality || 0})`;
-        addLog(`${m.event.type}  modality=${m.event.modality}  pFOG=${m.pfog?.toFixed(3)}`);
-      }
-      if (m.tier2) {
-        document.getElementById('tier2').textContent = JSON.stringify(m.tier2, null, 2);
-      }
-    };
-
-    ws.onclose = () => addLog('WebSocket closed');
-  </script>
-</body>
-</html>
+<header><div><h1>ActiveStep</h1><p>Closed-loop mobility monitoring · caregiver view</p></div><div class="pill" id="connection">Connecting…</div></header>
+<main class="wrap">
+<section class="grid">
+<div class="card"><div class="label">pFOG index</div><div class="value" id="pfog">—</div><div class="unit">latest sensor score</div></div>
+<div class="card"><div class="label">Freeze index</div><div class="value" id="fi">—</div><div class="unit">signal ratio</div></div>
+<div class="card"><div class="label">Acceleration</div><div class="value" id="acc">—</div><div class="unit">magnitude</div></div>
+<div class="card"><div class="label">System state</div><div class="value" style="font-size:21px" id="state">Waiting</div><div class="unit" id="lastSeen">No telemetry yet</div></div>
+<div class="card wide"><div class="label">Live pFOG trace</div><canvas id="chart" height="90"></canvas></div>
+</section>
+<section class="split">
+<div class="card"><div class="label">Sensor units</div><div class="sensor-grid"><div class="sensor"><h3>Shank · ESP</h3><p>pFOG <b id="shank-pfog">—</b></p><p>Acceleration <b id="shank-acc">—</b></p><p>Gyroscope <b id="shank-gyro">—</b></p><span class="status" id="shank-status">offline</span></div><div class="sensor"><h3>Waist · UNO Q</h3><p>pFOG <b id="waist-pfog">—</b></p><p>Acceleration <b id="waist-acc">—</b></p><p>Gyroscope <b id="waist-gyro">—</b></p><span class="status" id="waist-status">offline</span></div></div></div>
+<div class="card"><div class="label">Event stream</div><div class="log" id="log">Waiting for ESP telemetry…</div></div>
+</section>
+</main>
+<script>
+const $=id=>document.getElementById(id), chart=$('chart'), ctx=chart.getContext('2d'), points=[];
+function draw(){const w=chart.clientWidth||600,h=220,dpr=devicePixelRatio||1;chart.width=w*dpr;chart.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);ctx.strokeStyle='#dbe5f0';ctx.lineWidth=1;for(let i=1;i<5;i++){let y=i*h/5;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}if(points.length<2)return;ctx.strokeStyle='#2563eb';ctx.lineWidth=2;ctx.beginPath();points.forEach((v,i)=>{const x=i*(w-8)/(points.length-1)+4,y=h-8-Math.max(0,Math.min(1,v))*(h-16);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke()}
+function log(s){const r=document.createElement('div');r.className='row';r.textContent=new Date().toLocaleTimeString()+'  '+s;$('log').prepend(r);while($('log').children.length>40)$('log').lastChild.remove()}
+function unitName(s){return s==='waist'?'waist':'shank'}
+function update(m){const sensors=m.sensors||{};let latest=m.sensor?sensors[m.sensor]||m:Object.values(sensors)[0]||m;if(latest){$('pfog').textContent=Number(latest.pfog||0).toFixed(3);$('fi').textContent=Number(latest.fi||0).toFixed(3);$('acc').textContent=Number(latest.acc_mag||0).toFixed(2);$('state').textContent=latest.state||'IDLE';$('lastSeen').textContent='Last packet '+new Date().toLocaleTimeString();points.push(Number(latest.pfog||0));if(points.length>120)points.shift();draw()}Object.entries(sensors).forEach(([name,s])=>{const n=unitName(name);$(''+n+'-pfog').textContent=Number(s.pfog||0).toFixed(3);$(''+n+'-acc').textContent=Number(s.acc_mag||0).toFixed(2);$(''+n+'-gyro').textContent=Number(s.gyro_mag||0).toFixed(2);$(''+n+'-status').textContent='live';$(''+n+'-status').className='status live';if(s.event)log(`${name}: ${s.event.type||'event'} · pFOG ${Number(s.pfog||0).toFixed(2)}`)})}
+window.addEventListener('resize',draw);draw();const ws=new WebSocket(`${location.protocol==='https:'?'wss':'ws'}://${location.host}/ws/live`);ws.onopen=()=>{$('connection').textContent='Live connection';$('connection').className='pill'};ws.onmessage=e=>update(JSON.parse(e.data));ws.onclose=()=>{$('connection').textContent='Disconnected';log('Dashboard connection closed')};
+</script>
+</body></html>
