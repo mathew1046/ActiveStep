@@ -5,12 +5,13 @@ from __future__ import annotations
 import asyncio
 import csv
 import json
+import os
 import sqlite3
 from contextlib import asynccontextmanager
 from pathlib import Path
 from urllib.request import urlopen
 
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, Header, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -19,6 +20,7 @@ from unoq.db import connect
 
 DB_PATH = Path(__file__).resolve().parent.parent / "activestep.db"
 STATIC_DIR = Path(__file__).resolve().parent / "static"
+TELEMETRY_TOKEN = os.getenv("ACTIVESTEP_TELEMETRY_TOKEN", "")
 
 
 @asynccontextmanager
@@ -41,6 +43,35 @@ except ImportError:
 @app.get("/", response_class=HTMLResponse)
 async def root():
     return (STATIC_DIR / "index.html").read_text()
+
+
+@app.get("/health")
+async def health():
+    latest = LIVE_STATE.latest if LIVE_STATE is not None else {}
+    return {"ok": True, "service": "activestep-dashboard", "source": latest.get("source")}
+
+
+@app.get("/api/state")
+async def state():
+    return LIVE_STATE.latest if LIVE_STATE is not None else {"status": "standby"}
+
+
+@app.get("/api/history")
+async def history(limit: int = 120):
+    if LIVE_STATE is None:
+        return []
+    rows = list(LIVE_STATE.pfog_history)[-max(1, min(limit, 300)):]
+    return [{"ts": timestamp, "pfog": pfog} for timestamp, pfog in rows]
+
+
+@app.post("/api/telemetry")
+async def telemetry(payload: dict, x_activestep_token: str | None = Header(default=None)):
+    if TELEMETRY_TOKEN and x_activestep_token != TELEMETRY_TOKEN:
+        raise HTTPException(status_code=401, detail="invalid telemetry token")
+    if LIVE_STATE is None:
+        raise HTTPException(status_code=503, detail="live telemetry state unavailable")
+    LIVE_STATE.publish(payload)
+    return {"ok": True}
 
 
 @app.get("/api/events")
