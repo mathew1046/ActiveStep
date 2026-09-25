@@ -51,6 +51,7 @@ ESP32_UDP_PORT = int(os.getenv("ACTIVESTEP_ESP32_PORT", "5006"))
 UNOQ_UDP_PORT = int(os.getenv("ACTIVESTEP_UNOQ_PORT", "5005"))
 DASHBOARD_PORT = int(os.getenv("ACTIVESTEP_DASHBOARD_PORT", "8000"))
 NODE2_HTTP_URL = os.getenv("ACTIVESTEP_NODE2_URL", "").rstrip("/")
+DEMO_METRICS = os.getenv("ACTIVESTEP_DEMO_METRICS", "0") == "1"
 
 # ---------------------------------------------------------------------------
 # Generic pin maps (change these integers to match your wiring)

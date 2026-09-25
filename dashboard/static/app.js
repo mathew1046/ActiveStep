@@ -298,6 +298,7 @@ function connect() {
     if (state) setStatus(state);
     if (m.node2_connected === true) setConn("live", "node 2 live");
     if (m.node2_connected === false) setConn("retry", "node 2 offline");
+    if (m.demo_metrics === true) $("demoBadge").hidden = false;
 
     if (m.event) {
       const e = m.event;

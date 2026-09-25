@@ -75,6 +75,17 @@ body {
 .brand-sub { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
 
 .topbar-actions { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.demo-badge {
+  padding: 0.35rem 0.7rem;
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  border-radius: 999px;
+  background: rgba(251, 191, 36, 0.12);
+  color: var(--warn);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 
 .btn {
   padding: 0.45rem 0.9rem;

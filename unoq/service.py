@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import math
 import time
 from collections import deque
 from statistics import median, pstdev
@@ -28,7 +29,7 @@ from urllib.request import urlopen
 
 import uvicorn
 
-from activestep.config import DASHBOARD_PORT, NODE2_HTTP_URL
+from activestep.config import DASHBOARD_PORT, DEMO_METRICS, NODE2_HTTP_URL
 from dashboard.main import app as dashboard_app
 
 from .esp32_bridge import BRIDGE_PORT, BridgeProtocol, CommandRelay
@@ -89,6 +90,13 @@ class Node2HTTPBridge:
             festination = min(max(cadence_ratio - amplitude_ratio, 0.0), 1.0)
         return cadence, irregularity, festination
 
+    def demo_metrics(self, now: float, motion: float) -> tuple[float, float, float]:
+        activity = min(max(motion, 0.0), 1.0)
+        cadence = 92.0 + 26.0 * activity + 4.0 * math.sin(now * 0.55)
+        irregularity = min(0.07 + 0.09 * abs(math.sin(now * 0.37)) + 0.04 * activity, 0.28)
+        festination = min(max(0.08 + (cadence - 98.0) / 55.0 + max(0.25 - activity, 0.0) * 0.35, 0.02), 0.75)
+        return cadence, irregularity, festination
+
     def convert(self, data: dict, now: float | None = None) -> dict:
         now = time.monotonic() if now is None else now
         motion = float(data.get("adxlMotion", data.get("legMotion", 0.0)))
@@ -123,6 +131,8 @@ class Node2HTTPBridge:
             state = "WALKING" if walking else "IDLE"
 
         cadence, irregularity, festination = self.gait_metrics(now, motion, walking)
+        if DEMO_METRICS:
+            cadence, irregularity, festination = self.demo_metrics(now, motion)
         msg = {
             "seq": self.seq,
             "t_ms": int(now * 1000),
@@ -133,6 +143,7 @@ class Node2HTTPBridge:
             "cadence": cadence,
             "asymmetry": irregularity,
             "festination": festination,
+            "demo_metrics": DEMO_METRICS,
             "acc_mag": float(data.get("accMag", motion)),
             "node2_connected": True,
             "node2_ip": data.get("wifi", ""),
