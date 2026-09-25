@@ -18,7 +18,10 @@ from __future__ import annotations
 
 import asyncio
 import json
+import math
+import socket
 import sqlite3
+import struct
 import time
 from collections import deque
 from dataclasses import dataclass, field
@@ -40,6 +43,7 @@ class State:
     _last_seq: int = -1
 
     def publish(self, msg: dict):
+        msg["t_rx"] = time.time()  # wall-clock rx stamp for feed arbitration
         self.latest = msg
         self.packets_rx += 1
         seq = msg.get("seq", -1)
@@ -56,16 +60,57 @@ class State:
 
 STATE = State()
 
+# Peer IPs learned from incoming packet source addresses, used to relay
+# traffic between the two ESP32 nodes when AP client isolation blocks
+# broadcast and node-to-node unicast.
+PEER_IPS: dict = {"node1": None, "node2": None}
+NODE2_TELEMETRY_PORT = 8888   # Node 2 listens here for Node 1 binary packets
+NODE1_COMMAND_PORT = 9999     # Node 1 listens here for vibration commands
+
+_NODE1_STRUCT = struct.Struct("<ff")  # struct_leg_telemetry {accMag, gyroMag}
+
+
+def relay_leg_telemetry(transport, msg: dict):
+    """Forward Node 1's JSON imu packet to Node 2 in its native binary format.
+
+    Node 2 expects struct_leg_telemetry {accMag, gyroMag} on :8888. Recompute
+    the magnitudes from the newest imu sample so Node 2's own detection loop
+    works unchanged, even when the AP blocks Node 1's broadcast.
+    """
+    node2 = PEER_IPS.get("node2")
+    if not node2 or transport is None:
+        return
+    imu = msg.get("imu") or []
+    if not imu:
+        return
+    s = imu[-1]
+    acc = math.sqrt(s[0] ** 2 + s[1] ** 2 + s[2] ** 2)
+    gx, gy, gz = (s[3], s[4], s[5]) if len(s) >= 6 else (0.0, 0.0, 0.0)
+    gyro = math.sqrt(gx * gx + gy * gy + gz * gz)
+    transport.sendto(_NODE1_STRUCT.pack(acc, gyro), (node2, NODE2_TELEMETRY_PORT))
+
 
 class IngestProtocol(asyncio.DatagramProtocol):
     def __init__(self, db_queue: asyncio.Queue):
         self.db_queue = db_queue
+        self.transport = None
+
+    def connection_made(self, transport):
+        self.transport = transport
 
     def datagram_received(self, data: bytes, addr):
         try:
             msg = json.loads(data.decode("utf-8"))
         except (json.JSONDecodeError, UnicodeDecodeError):
             return
+        # Node 2 (gateway) packets carry acc_mag — record its IP for the relay.
+        if "acc_mag" in msg:
+            PEER_IPS["node2"] = addr[0]
+        # Node 1 announces itself via heartbeat ({"node": "node1"}) and used to
+        # send vibration+imu packets; learn its IP either way for the relay.
+        if msg.get("node") == "node1" or ("vibration" in msg and "imu" in msg):
+            PEER_IPS["node1"] = addr[0]
+            relay_leg_telemetry(self.transport, msg)  # no-op without imu rows
         STATE.publish(msg)
         try:
             self.db_queue.put_nowait(msg)

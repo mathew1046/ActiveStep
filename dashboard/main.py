@@ -2,16 +2,19 @@
 
 from __future__ import annotations
 
+import asyncio
 import csv
 import json
 import sqlite3
 from contextlib import asynccontextmanager
 from pathlib import Path
+from urllib.request import urlopen
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
+from activestep.config import NODE2_HTTP_URL
 from unoq.db import connect
 
 DB_PATH = Path(__file__).resolve().parent.parent / "activestep.db"
@@ -89,6 +92,24 @@ async def post_med(state: str, note: str = ""):
     )
     conn.commit()
     return {"ok": True}
+
+
+@app.post("/api/node2/{command}")
+async def node2_command(command: str):
+    if command not in {"vibrate", "stop"}:
+        raise HTTPException(status_code=404, detail="Unknown Node 2 command")
+    if not NODE2_HTTP_URL:
+        raise HTTPException(status_code=503, detail="ACTIVESTEP_NODE2_URL is not configured")
+
+    def send():
+        with urlopen(f"{NODE2_HTTP_URL}/{command}", timeout=2.0) as response:
+            return response.read().decode("utf-8")
+
+    try:
+        message = await asyncio.to_thread(send)
+    except OSError as exc:
+        raise HTTPException(status_code=502, detail=f"Node 2 is unreachable: {exc}") from exc
+    return {"ok": True, "message": message}
 
 
 @app.get("/api/export/csv")

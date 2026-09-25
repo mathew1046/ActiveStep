@@ -3,122 +3,104 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ActiveStep Dashboard</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    :root { --bg: #111; --panel: #1e1e1e; --text: #eee; --accent: #4caf50; }
-    * { box-sizing: border-box; }
-    body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; }
-    header { padding: 1rem 2rem; background: #000; border-bottom: 1px solid #333; }
-    h1 { margin: 0; font-size: 1.4rem; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; padding: 1.5rem; }
-    .card { background: var(--panel); border-radius: 10px; padding: 1rem; }
-    .big { font-size: 2.2rem; font-weight: bold; color: var(--accent); }
-    .label { color: #888; font-size: 0.85rem; text-transform: uppercase; }
-    .status { padding: 0.4rem 0.8rem; border-radius: 6px; display: inline-block; background: #333; }
-    .status.cueing { background: #d32f2f; color: #fff; }
-    #log { max-height: 220px; overflow-y: auto; font-family: monospace; font-size: 0.8rem; }
-    .row { padding: 0.3rem 0; border-bottom: 1px solid #333; }
-  </style>
+  <title>ActiveStep · Live Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-  <header><h1>ActiveStep Dashboard</h1></header>
-  <div class="grid">
-    <div class="card">
-      <div class="label">pFOG</div>
-      <div class="big" id="pfog">--</div>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div class="brand-text">
+        <h1>ActiveStep</h1>
+        <span class="brand-sub">Freezing-of-gait assist · live telemetry</span>
+      </div>
     </div>
-    <div class="card">
-      <div class="label">Cadence (steps/min)</div>
-      <div class="big" id="cadence">--</div>
+    <div class="topbar-actions">
+      <div class="seg" role="group" aria-label="Node 1 vibration control">
+        <span class="seg-label">Vibration</span>
+        <button id="cueStart" class="seg-btn cue-start" type="button">START</button>
+        <button id="cueStop" class="seg-btn cue-stop" type="button">STOP</button>
+      </div>
+      <div class="seg" role="group" aria-label="Medication state">
+        <span class="seg-label">Meds</span>
+        <button id="medOn" class="seg-btn" type="button">ON</button>
+        <button id="medOff" class="seg-btn" type="button">OFF</button>
+      </div>
+      <a class="btn" href="/api/export/csv" download>Export CSV</a>
+      <div id="conn" class="conn conn-down"><span class="conn-dot"></span><span id="connText">offline</span></div>
     </div>
-    <div class="card">
-      <div class="label">Status</div>
-      <div class="status" id="status">standby</div>
-    </div>
-    <div class="card">
-      <div class="label">Last Cue / Modality</div>
-      <div class="big" id="cue" style="font-size:1.2rem; min-height:2.4rem;">--</div>
-    </div>
-    <div class="card" style="grid-column: 1 / -1;">
-      <canvas id="pfogChart" height="80"></canvas>
-    </div>
-    <div class="card">
-      <div class="label">Event log</div>
-      <div id="log"></div>
-    </div>
-    <div class="card">
-      <div class="label">Tier-2 context</div>
-      <pre id="tier2">waiting for data...</pre>
-    </div>
-  </div>
+  </header>
 
-  <script>
-    const ctx = document.getElementById('pfogChart').getContext('2d');
-    const chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: [],
-        datasets: [{
-          label: 'pFOG',
-          data: [],
-          borderColor: '#4caf50',
-          borderWidth: 1.5,
-          pointRadius: 0,
-          fill: false,
-          tension: 0.3
-        }]
-      },
-      options: {
-        animation: false,
-        scales: {
-          y: { min: 0, max: 1.0 },
-          x: { display: false }
-        },
-        plugins: { legend: { display: false } }
-      }
-    });
+  <main class="grid">
+    <section class="card hero">
+      <div class="hero-head">
+        <span class="label">System state</span>
+        <span id="status" class="status status-idle"><span class="status-dot"></span><span id="statusText">standby</span></span>
+      </div>
+      <div class="gauge-wrap">
+        <svg id="gauge" viewBox="0 0 200 118" aria-label="pFOG gauge">
+          <defs>
+            <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#2dd4bf"/>
+              <stop offset="70%" stop-color="#fbbf24"/>
+              <stop offset="100%" stop-color="#f87171"/>
+            </linearGradient>
+          </defs>
+          <path class="gauge-track" d="M 20 108 A 80 80 0 0 1 180 108" pathLength="100"/>
+          <path id="gaugeArc" class="gauge-arc" d="M 20 108 A 80 80 0 0 1 180 108" pathLength="100"/>
+          <line id="gaugeTick" class="gauge-tick" x1="141.2" y1="51.4" x2="154.1" y2="33.6"/>
+        </svg>
+        <div class="gauge-center">
+          <div class="gauge-value" id="pfog">--</div>
+          <div class="gauge-label">pFOG</div>
+        </div>
+      </div>
+      <div class="hero-foot">
+        <div class="hero-stat"><span class="label">Last cue</span><span id="cue" class="hero-stat-val">--</span></div>
+        <div class="hero-stat"><span class="label">Recovery</span><span id="recovery" class="hero-stat-val">--</span></div>
+      </div>
+    </section>
 
-    const ws = new WebSocket(`ws://${window.location.host}/ws/live`);
-    const maxPoints = 200;
-    const log = document.getElementById('log');
+    <div class="stats">
+      <div class="card stat">
+        <span class="label">Cadence · estimated</span>
+        <div class="stat-val"><span id="cadence">--</span><span class="unit">steps/min</span></div>
+      </div>
+      <div class="card stat">
+        <span class="label">Freeze index</span>
+        <div class="stat-val"><span id="fi">--</span><span class="unit">FI</span></div>
+      </div>
+      <div class="card stat">
+        <span class="label">Step irregularity · estimated</span>
+        <div class="stat-val"><span id="asymmetry">--</span><span class="unit">%</span></div>
+      </div>
+      <div class="card stat">
+        <span class="label">Festination · estimated</span>
+        <div class="stat-val"><span id="festination">--</span><span class="unit">idx</span></div>
+      </div>
+    </div>
 
-    function addLog(msg) {
-      const row = document.createElement('div');
-      row.className = 'row';
-      row.textContent = `${new Date().toLocaleTimeString()}  ${msg}`;
-      log.prepend(row);
-      if (log.children.length > 50) log.lastChild.remove();
-    }
+    <section class="card chart-card">
+      <div class="card-head">
+        <span class="label">Freeze probability</span>
+        <span class="chart-hint">threshold · 0.70</span>
+      </div>
+      <div class="chart-wrap"><canvas id="pfogChart"></canvas></div>
+    </section>
 
-    ws.onmessage = (ev) => {
-      const m = JSON.parse(ev.data);
-      if (m.pfog !== undefined) {
-        document.getElementById('pfog').textContent = m.pfog.toFixed(3);
-        chart.data.labels.push('');
-        chart.data.datasets[0].data.push(m.pfog);
-        if (chart.data.datasets[0].data.length > maxPoints) {
-          chart.data.labels.shift();
-          chart.data.datasets[0].data.shift();
-        }
-        chart.update();
-      }
-      if (m.cadence !== undefined) document.getElementById('cadence').textContent = m.cadence.toFixed(1);
-      if (m.status) {
-        const el = document.getElementById('status');
-        el.textContent = m.status;
-        el.className = 'status ' + (m.status === 'cueing' ? 'cueing' : '');
-      }
-      if (m.event) {
-        document.getElementById('cue').textContent = `${m.event.type} (${m.event.modality || 0})`;
-        addLog(`${m.event.type}  modality=${m.event.modality}  pFOG=${m.pfog?.toFixed(3)}`);
-      }
-      if (m.tier2) {
-        document.getElementById('tier2').textContent = JSON.stringify(m.tier2, null, 2);
-      }
-    };
+    <section class="card log-card">
+      <div class="card-head"><span class="label">Event log</span></div>
+      <div id="log" class="log"></div>
+    </section>
 
-    ws.onclose = () => addLog('WebSocket closed');
-  </script>
+    <section class="card bandit-card">
+      <div class="card-head"><span class="label">Cue modality preference</span><span class="chart-hint">bandit</span></div>
+      <div id="bandit" class="bandit"><span class="empty">no data yet…</span></div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="/static/app.js" defer></script>
 </body>
 </html>
